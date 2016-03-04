@@ -1,0 +1,40 @@
+doctype html
+html(lang='pt')
+
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    title
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no')
+    link(href='styles/main.css', rel='stylesheet')
+
+    link(href='https://fonts.googleapis.com/css?family=Quicksand:300' rel='stylesheet' type='text/css')
+
+    style.
+      .logo { height: calc(100vh - 110px); }
+
+  body#sfcss
+    .container
+      header
+        div
+          img(src="assets/img/fractais-02.svg").demo-img
+        div
+          h1.demo-title fenster
+      main
+        .demo
+          .js-fenster.Fenster
+            .js-fenster-toolbar.Fenster-toolbar
+              .js-fenster-clear.Fenster-toolbar-clear X
+              .js-fenster-url.Fenster-toolbar-url(data-url="/h1.html") h1
+              .js-fenster-url.Fenster-toolbar-url(data-url="/pag1.html") pag1
+              .js-fenster-url.Fenster-toolbar-url(data-url="/pag2.html") pag2
+            .Fenster-content.js-fenster-content(data-url="/pag1.html")
+              | Conteúdo vai aqui
+      footer
+
+
+
+    script(src='jquery/dist/jquery.min.js')
+    script(src='bootstrap/dist/js/bootstrap.min.js')
+
+    script(src='scripts/design.fenster.min.js')
