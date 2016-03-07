@@ -55,6 +55,10 @@ describe('<fenster>', function () {
       beforeEach(function () {
         component.fetch()
         request = jasmine.Ajax.requests.mostRecent()
+        request.respondWith({
+          status: 200,
+          responseText: '<b>oi</b>'
+        })
       })
 
       it('deve fazer uma requisição em data-url', function () {

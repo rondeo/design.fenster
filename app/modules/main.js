@@ -17,7 +17,6 @@ var Fenster = {
   },
 
   fetch: function () {
-    console.log(this)
     $.ajax(this.$el.find('.js-fenster-content').data('url')).then(this.render.bind(this))
   },
 
@@ -26,4 +25,6 @@ var Fenster = {
   },
 }
 
-var fenster = Object.create(Fenster).init('.js-fenster')
+module.exports = function ($el) {
+  return Object.create(Fenster).init($el)
+}

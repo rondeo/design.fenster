@@ -23,9 +23,7 @@
     "jshint-stylish": "^2.1.0",
     "karma": "^0.13.21",
     "karma-jasmine-ajax": "^0.1.13",
-    "load-grunt-config": "^0.19.1",
     "load-grunt-tasks": "^3.3.0",
-    "design.shell": "https://github.com/fabianonunes/design.shell.git#1.2.0",
     "senado.css": "https://github.com/agenciasenado/senado.css.git#2.0.1",
     "serve-static": "^1.10.0",
     "underscore": "^1.8.3",
@@ -34,6 +32,7 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.5",
+    "eev": "0.0.4",
     "grunt-karma": "^0.12.1",
     "istanbul-instrumenter-loader": "^0.2.0",
     "jasmine-core": "^2.4.1",
