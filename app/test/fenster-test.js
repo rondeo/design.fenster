@@ -1,0 +1,72 @@
+/* global jasmine, describe, it, expect, beforeEach, loadFixtures, afterEach */
+
+'use strict'
+
+var $ = require('jquery')
+jasmine.getFixtures().fixturesPath = 'base/app/test/fixtures/'
+
+var fenster = require('../modules/main.js')
+
+describe('<fenster>', function () {
+
+  var $fenster
+  var component
+
+  beforeEach(function () {
+    loadFixtures('markup.html')
+    $fenster = $('#page1')
+    component = fenster($fenster)
+  })
+
+  describe('antes do primeiro fetch', function () {
+
+    it('deve retornar o component depois da inicialização', function () {
+      expect(component).toBeDefined()
+    })
+
+    it('deve ficar em branco', function () {
+        expect($fenster).toBeEmpty()
+    })
+
+    it('não deve possuir altura', function () {
+      expect($fenster.height()).toBe(0)
+    })
+
+    it('deve ter a largura do parent', function () {
+      expect($fenster.width()).toBe($fenster.parent().width())
+    })
+
+  })
+
+  describe('render', function () {
+
+    beforeEach(function () {
+      jasmine.Ajax.install()
+    })
+
+    afterEach(function() {
+      jasmine.Ajax.uninstall()
+    })
+
+    describe('fetch', function () {
+
+      var request
+
+      beforeEach(function () {
+        component.fetch()
+        request = jasmine.Ajax.requests.mostRecent()
+      })
+
+      it('deve fazer uma requisição em data-url', function () {
+        expect(request.url).toBe($fenster.data('url'))
+      })
+
+      it('deve renderizar texto de resposta da request dentro do component', function () {
+        expect($fenster).toContainHtml(request.data())
+      })
+
+    })
+
+  })
+
+})
