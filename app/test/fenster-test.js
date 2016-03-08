@@ -55,18 +55,44 @@ describe('<fenster>', function () {
       beforeEach(function () {
         component.fetch()
         request = jasmine.Ajax.requests.mostRecent()
-        request.respondWith({
-          status: 200,
-          responseText: '<b>oi</b>'
+      })
+
+      describe('quando houver sucesso na requisição', function () {
+
+        beforeEach(function () {
+          request.respondWith({
+            status: 200,
+            contentType: 'text/html;charset=UTF-8',
+            responseText: '<b>oi</b>'
+          })
         })
+
+        it('deve fazer uma requisição em data-url', function () {
+          expect(request.url).toBe($fenster.data('url'))
+          expect(request.method).toBe('GET')
+        })
+
+        it('deve renderizar texto de resposta da request dentro do component', function () {
+          expect($fenster).toContainHtml(request.responseText)
+        })
+
       })
 
-      it('deve fazer uma requisição em data-url', function () {
-        expect(request.url).toBe($fenster.data('url'))
-      })
+      describe('quando houver erro na requisição', function () {
 
-      it('deve renderizar texto de resposta da request dentro do component', function () {
-        expect($fenster).toContainHtml(request.data())
+        beforeEach(function () {
+          $fenster.html('stub')
+          request.respondWith({
+            status: 500,
+            contentType: 'text/html;charset=UTF-8',
+            responseText: '<b>Erro 500</b>'
+          })
+        })
+
+        it('deve limpar o component', function () {
+          expect($fenster).toBeEmpty()
+        })
+
       })
 
     })
