@@ -22,14 +22,13 @@ html(lang='pt')
           h1.demo-title fenster
       main
         .demo
-          .js-fenster.Fenster
-            .js-fenster-toolbar.Fenster-toolbar
-              .js-fenster-url.Fenster-toolbar-url.js-click(data-url="/h1.html") Página 00
-              .js-fenster-url.Fenster-toolbar-url.js-click(data-url="/pag1.html") Página 01
-              .js-fenster-url.Fenster-toolbar-url.js-click(data-url="/pag2.html") Página 02
-              .js-fenster-clear.Fenster-toolbar-clear X
-            .Fenster-content.js-fenster-content(data-url="/pag1.html")
-              | Conteúdo vai aqui
+          .js-fenster-toolbar.Fenster-toolbar
+              .Fenster-toolbar-url.js-click(data-url="/h1.html") Página 00
+              .Fenster-toolbar-url.js-click(data-url="/pag1.html") Página 01
+              .Fenster-toolbar-url.js-click(data-url="/pag2.html") Página 02
+              .Fenster-toolbar-clear.js-click(data-url="") Clear
+          .Fenster(data-url="/pag1.html")
+          .Fenster(data-url="/pag1.html")
       footer
 
 
