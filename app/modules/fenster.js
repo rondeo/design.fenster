@@ -7,6 +7,9 @@ var Fenster = {
   init: function (selector) {
     if (typeof selector === 'string') {
       this.el = document.querySelector(selector)
+      if (!this.el) {
+        return undefined
+      }
     } else {
       this.el = selector
     }

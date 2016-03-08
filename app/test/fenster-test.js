@@ -25,16 +25,27 @@ describe('<fenster>', function () {
     jasmine.Ajax.uninstall()
   })
 
-  describe('antes do primeiro fetch', function () {
+  describe('antes do primeiro fetch', function (){
+    it('deve aceitar string como selector', function () {
+      expect(fenster('page1')).toBe(undefined)
+    })
+
+    it('deve aceitar string como selector', function () {
+      expect(fenster('#page1')).toBeDefined()
+    })
+
     it('deve retornar o component depois da inicialização', function () {
       expect(component).toBeDefined()
     })
+
     it('deve ficar em branco', function () {
       expect($fenster).toBeEmpty()
     })
+
     it('não deve possuir altura', function () {
       expect($fenster.height()).toBe(0)
     })
+
     it('deve ter a largura do parent', function () {
       expect($fenster.width()).toBe($fenster.parent().width())
     })
@@ -62,6 +73,7 @@ describe('<fenster>', function () {
           expect(request.url).toBe($fenster.data('url'))
           expect(request.method).toBe('GET')
         })
+
         it('deve renderizar texto de resposta da request dentro do component', function () {
           expect($fenster).toContainHtml('page1')
         })
@@ -92,6 +104,7 @@ describe('<fenster>', function () {
         it('deve limpar o componente', function () {
           expect($fenster).toBeEmpty()
         })
+
         it('não deve chamar o método fetch', function () {
           expect(component.fetch).not.toHaveBeenCalled()
         })
