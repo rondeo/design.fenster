@@ -40,8 +40,6 @@ describe('<fenster>', function () {
 
   describe('render', function () {
 
-    var request
-
     var mostRecentRequest = function () {
       return jasmine.Ajax.requests.mostRecent()
     }
