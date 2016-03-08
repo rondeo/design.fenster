@@ -17,7 +17,7 @@ var Fenster = {
 
   setSrc: function (url) {
     if (!url) {
-      this.$content.empty()
+      this.$el.empty()
       return
     }
 
@@ -26,8 +26,12 @@ var Fenster = {
   },
 
   fetch: function () {
-    $.ajax(this.$el.data('url'))
-    .then(this.render.bind(this))
+    if (this.r) {
+      this.r.abort()
+    }
+
+    this.r = $.ajax(this.$el.data('url'))
+    this.r.then(this.render.bind(this))
     .fail(function () {
       this.$el.empty()
     }.bind(this))

@@ -38,7 +38,7 @@ describe('<fenster>', function () {
 
   })
 
-  describe('render', function () {
+  describe('fetch', function () {
 
     var mostRecentRequest = function () {
       return jasmine.Ajax.requests.mostRecent()
@@ -78,6 +78,16 @@ describe('<fenster>', function () {
 
         it('deve renderizar texto de resposta da request dentro do component', function () {
           expect($fenster).toContainHtml(request.responseText)
+        })
+
+        it('deve limpar o componente ao setar o source vazio', function () {
+          component.setSrc('')
+          expect($fenster).toBeEmpty()
+        })
+
+        it('deve setar o valor do parametro "url" da função no source', function () {
+          component.setSrc('/page1.html')
+          expect($fenster).toContainHtml('<b>oi/b>')
         })
 
       })
@@ -128,7 +138,7 @@ describe('<fenster>', function () {
         }, 50)
 
         setTimeout(function () {
-          expect($fenster.html()).toBe('<b>segunda</b>')
+          expect('<b>segunda</b>').toBe($fenster.html())
           done()
         }, 150)
 
