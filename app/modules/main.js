@@ -1,29 +1,25 @@
-/* global document */
 'use strict'
 
 var $ = require('jquery')
-var Eev = require('eev')
+var Fenster = require('./fenster')
+var fenster = Fenster('.js-fenster')
 
-var Fenster = {
-  init: function (selector) {
-    if (typeof selector === 'string') {
-      this.el = document.querySelector(selector)
-    } else {
-      this.el = selector
+$('.js-click').on('click', function (e) {
+  var url = $(e.currentTarget).data('url')
+  fenster.setSrc(url)
+})
+
+var sto;
+var i = 0
+function myFunc() {
+  var list = ['/h1.html', '/pag1.html', '/pag2.html', '/pag3.html']
+  sto = setInterval(function () {
+    fenster.setSrc(list[i])
+    i++
+    if (i >= list.length) {
+      clearTimeout(sto)
     }
-
-    this.$el = $(this.el)
-    return this
-  },
-
-  fetch: function () {
-    console.log(this)
-    $.ajax(this.$el.find('.js-fenster-content').data('url')).then(this.render.bind(this))
-  },
-
-  render: function (text) {
-    this.$el.find('.js-fenster-content').html(text)
-  },
+  }, 2000)
 }
 
-var fenster = Object.create(Fenster).init('.js-fenster')
+myFunc()

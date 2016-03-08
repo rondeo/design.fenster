@@ -5,7 +5,7 @@
 var $ = require('jquery')
 jasmine.getFixtures().fixturesPath = 'base/app/test/fixtures/'
 
-var fenster = require('../modules/main.js')
+var fenster = require('../modules/fenster.js')
 
 describe('<fenster>', function () {
 
@@ -55,6 +55,8 @@ describe('<fenster>', function () {
     })
 
     describe('fetch', function () {
+
+      var request
 
       beforeEach(function () {
         component.fetch()
