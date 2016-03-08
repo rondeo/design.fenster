@@ -97,7 +97,7 @@ describe('<fenster>', function () {
         })
       })
 
-      it('deve recarregar ao alterar o valor', function () {
+      it('deve recarregar o conteudo', function () {
         component.setSrc('/page1.html')
         mostRecentRequest().respondWith(responses.page1)
         expect($fenster).toContainHtml('page1')
