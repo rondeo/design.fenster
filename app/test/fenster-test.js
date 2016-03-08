@@ -5,7 +5,7 @@
 var $ = require('jquery')
 jasmine.getFixtures().fixturesPath = 'base/app/test/fixtures/'
 
-var fenster = require('../modules/main.js')
+var fenster = require('../modules/fenster.js')
 
 describe('<fenster>', function () {
 
@@ -82,13 +82,12 @@ describe('<fenster>', function () {
 
         beforeEach(function () {
           $fenster.html('stub')
-          setTimeout(function () {
-            request.respondWith({
-              status: 500,
-              contentType: 'text/html;charset=UTF-8',
-              responseText: '<b>Erro 500</b>'
-            })
-          }, 100)
+          request.respondWith({
+            status: 500,
+            contentType: 'text/html;charset=UTF-8',
+            responseText: '<b>Erro 500</b>'
+          })
+
         })
 
         it('deve limpar o component', function () {
