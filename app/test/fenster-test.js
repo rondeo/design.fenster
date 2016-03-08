@@ -25,7 +25,7 @@ describe('<fenster>', function () {
     })
 
     it('deve ficar em branco', function () {
-        expect($fenster).toBeEmpty()
+      expect($fenster).toBeEmpty()
     })
 
     it('não deve possuir altura', function () {
@@ -40,17 +40,21 @@ describe('<fenster>', function () {
 
   describe('render', function () {
 
+    var request
+
+    var mostRecentRequest = function () {
+      return jasmine.Ajax.requests.mostRecent()
+    }
+
     beforeEach(function () {
       jasmine.Ajax.install()
     })
 
-    afterEach(function() {
+    afterEach(function () {
       jasmine.Ajax.uninstall()
     })
 
     describe('fetch', function () {
-
-      var request
 
       beforeEach(function () {
         component.fetch()
@@ -82,18 +86,51 @@ describe('<fenster>', function () {
 
         beforeEach(function () {
           $fenster.html('stub')
-          setTimeout(function () {
-            request.respondWith({
-              status: 500,
-              contentType: 'text/html;charset=UTF-8',
-              responseText: '<b>Erro 500</b>'
-            })
-          }, 100)
+          request.respondWith({
+            status: 500,
+            contentType: 'text/html;charset=UTF-8',
+            responseText: '<b>Erro 500</b>'
+          })
         })
 
         it('deve limpar o component', function () {
           expect($fenster).toBeEmpty()
         })
+
+      })
+
+    })
+
+    describe('quando houver múltiplas requisições', function () {
+
+      it('deve considerar sempre a última', function (done) {
+
+        component.fetch()
+
+        var firstRequest = mostRecentRequest()
+        setTimeout(function () {
+          firstRequest.respondWith({
+            status: 200,
+            contentType: 'text/html;charset=UTF-8',
+            responseText: '<b>primeira</b>'
+          })
+        }, 100)
+
+        component.fetch()
+
+        var secondRequest = mostRecentRequest()
+        setTimeout(function () {
+          secondRequest.respondWith({
+            status: 200,
+            contentType: 'text/html;charset=UTF-8',
+            responseText: '<b>segunda</b>'
+          })
+        }, 50)
+
+        setTimeout(function () {
+          expect($fenster.html()).toBe('<b>segunda</b>')
+          done()
+        }, 150)
 
       })
 
