@@ -82,11 +82,13 @@ describe('<fenster>', function () {
 
         beforeEach(function () {
           $fenster.html('stub')
-          request.respondWith({
-            status: 500,
-            contentType: 'text/html;charset=UTF-8',
-            responseText: '<b>Erro 500</b>'
-          })
+          setTimeout(function () {
+            request.respondWith({
+              status: 500,
+              contentType: 'text/html;charset=UTF-8',
+              responseText: '<b>Erro 500</b>'
+            })
+          }, 100)
         })
 
         it('deve limpar o component', function () {

@@ -3,4 +3,4 @@ dist
 .idea
 
 *html
-!app/test/fixture/*html
+!app/test/fixtures/*html
