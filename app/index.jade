@@ -21,14 +21,22 @@ html(lang='pt')
         div
           h1.demo-title fenster
       main
-        .demo
+        .demo-content
           .js-fenster-toolbar.Fenster-toolbar
               .Fenster-toolbar-url.js-click(data-url="/h1.html") Página 00
               .Fenster-toolbar-url.js-click(data-url="/pag1.html") Página 01
               .Fenster-toolbar-url.js-click(data-url="/pag2.html") Página 02
               .Fenster-toolbar-clear.js-click(data-url="") Clear
-          .Fenster(data-url="/pag1.html")
-          .Fenster(data-url="/pag1.html")
+          .Fenster.droppable(data-url="/pag1.html")
+          .Fenster.droppable(data-url="/pag1.html")
+      asside
+        .demo-sidebar
+          h2.demo-sidebar-title Lista de itens
+          ul.demo-sidebar-ul
+            li.demo-sidebar-li
+              .Fenster-dragglable(data-url="fixtures/materia-media.html") Matéria (Media)
+            li.demo-sidebar-li
+              .Fenster-dragglable(data-url="fixtures/materia-titles.html") Matéria (Title)
       footer
 
 
