@@ -18,7 +18,7 @@ var Fenster = {
     return this
   },
 
-  setSrc: function (url) {
+  setURL: function (url) {
     if (!url) {
       this.$el.empty()
       return

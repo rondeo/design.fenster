@@ -96,7 +96,7 @@ describe('<fenster>', function () {
       })
     })
 
-    describe('ao setar o atributo src', function () {
+    describe('ao setar o atributo url', function () {
       beforeEach(function () {
         $fenster.html('stub')
       })
@@ -104,7 +104,7 @@ describe('<fenster>', function () {
       describe('vazio', function () {
         beforeEach(function () {
           component.fetch = jasmine.createSpy('fetch')
-          component.setSrc('')
+          component.setURL('')
         })
 
         it('deve limpar o componente', function () {
@@ -117,7 +117,7 @@ describe('<fenster>', function () {
       })
 
       it('deve recarregar o conteudo', function () {
-        component.setSrc('/page1.html')
+        component.setURL('/page1.html')
         mostRecentRequest().respondWith(responses.page1)
         expect($fenster).toContainHtml('page1')
       })
