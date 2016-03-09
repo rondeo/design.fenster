@@ -76,7 +76,7 @@ describe('<fenster>', function () {
         })
 
         it('deve fazer uma requisição em data-url', function () {
-          expect(request.url).toBe($fenster.data('url'))
+          expect(request.url).toBe(component.url())
           expect(request.method).toBe('GET')
         })
 
@@ -104,7 +104,7 @@ describe('<fenster>', function () {
       describe('vazio', function () {
         beforeEach(function () {
           component.fetch = jasmine.createSpy('fetch')
-          component.setURL('')
+          component.url('')
         })
 
         it('deve limpar o componente', function () {
@@ -117,7 +117,7 @@ describe('<fenster>', function () {
       })
 
       it('deve recarregar o conteudo', function () {
-        component.setURL('/page1.html')
+        component.url('/page1.html')
         mostRecentRequest().respondWith(responses.page1)
         expect($fenster).toContainHtml('page1')
       })

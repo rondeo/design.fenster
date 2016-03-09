@@ -15,17 +15,21 @@ var Fenster = {
     }
 
     this.$el = $(this.el)
+    this.fetch()
     return this
   },
 
-  setURL: function (url) {
-    if (!url) {
-      this.$el.empty()
-      return
+  url: function (url) {
+    if (url === undefined) {
+      return this.$el.data('url')
+    } else {
+      if (url) {
+        this.$el.data('url', url)
+        this.fetch()
+      } else {
+        this.$el.empty()
+      }
     }
-
-    this.$el.data('url', url)
-    this.fetch()
   },
 
   fetch: function () {
