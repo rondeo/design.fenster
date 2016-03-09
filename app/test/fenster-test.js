@@ -26,6 +26,12 @@ describe('<fenster>', function () {
   })
 
   describe('antes do primeiro fetch', function (){
+
+    it('deve retornar a mesma istância em caso de inicialização duplicada', function () {
+      var component2 = fenster($fenster)
+      expect(component2).toBe(component)
+    })
+
     it('deve aceitar string como selector', function () {
       expect(fenster('page1')).toBe(undefined)
     })
