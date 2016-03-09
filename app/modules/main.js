@@ -1,3 +1,4 @@
+/*global window*/
 'use strict'
 
 var $ = require('jquery')
@@ -9,7 +10,7 @@ var fensters = $('.Fenster').toArray().map(function (el) {
 
 $('.js-click').on('click', function (e) {
   var url = $(e.currentTarget).data('url')
-  fensters[1].setSrc(url)
+  fensters[1].url(url)
 })
 
 var sto;
@@ -18,7 +19,7 @@ function myFunc() {
   var list = ['/h1.html', '/pag1.html', '/pag2.html', '/pag3.html']
   sto = setInterval(function () {
     console.log(fensters)
-    fensters[0].setSrc(list[i])
+    fensters[0].url(list[i])
     i++
     if (i >= list.length) {
       clearTimeout(sto)
@@ -27,3 +28,7 @@ function myFunc() {
 }
 
 myFunc()
+
+window.fenster = fenster
+
+

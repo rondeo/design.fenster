@@ -1,20 +1,19 @@
-/* global document */
 'use strict'
 
 var $ = require('jquery')
 
 var Fenster = {
-  init: function (selector) {
-    if (typeof selector === 'string') {
-      this.el = document.querySelector(selector)
-      if (!this.el) {
-        return undefined
-      }
-    } else {
-      this.el = selector
+  init: function (el) {
+    var $el = $(el)
+    var plugin = $el.data('plugin-fenster')
+    if (plugin) {
+      return plugin
     }
 
-    this.$el = $(this.el)
+    $el.data('plugin-fenster', this)
+
+    this.$el = $el
+    this.el = this.$el.get(0)
     this.fetch()
     return this
   },
@@ -25,6 +24,7 @@ var Fenster = {
     } else {
       if (url) {
         this.$el.data('url', url)
+        this.el.dataset.url = url
         this.fetch()
       } else {
         this.$el.empty()

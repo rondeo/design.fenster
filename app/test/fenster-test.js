@@ -32,14 +32,6 @@ describe('<fenster>', function () {
       expect(component2).toBe(component)
     })
 
-    it('deve aceitar string como selector', function () {
-      expect(fenster('page1')).toBe(undefined)
-    })
-
-    it('deve aceitar string como selector', function () {
-      expect(fenster('#page1')).toBeDefined()
-    })
-
     it('deve retornar o component depois da inicialização', function () {
       expect(component).toBeDefined()
     })
