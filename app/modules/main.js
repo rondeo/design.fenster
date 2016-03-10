@@ -3,6 +3,21 @@
 
 var $ = require('jquery')
 var fenster = require('./fenster')
+var dragula = require('dragula')
+
+dragula([$('.drop'), $('.Fenster')], {
+  isContainer: function (el) {
+    return el.classList.contains('drop')
+  },
+
+  copy: true,
+
+  accepts: function (el, target) {
+    return target !== $('.Fenster')
+  },
+}).on('drop', function (el, target) {
+  fenster(target).url($(el).data('url'))
+})
 
 var fensters = $('.Fenster').toArray().map(function (el) {
   return fenster($(el))
@@ -10,7 +25,7 @@ var fensters = $('.Fenster').toArray().map(function (el) {
 
 $('.js-click').on('click', function (e) {
   var url = $(e.currentTarget).data('url')
-  fensters[1].url(url)
+  fensters[0].url(url)
 })
 
 var sto;
@@ -28,7 +43,3 @@ function myFunc() {
 }
 
 myFunc()
-
-window.fenster = fenster
-
-

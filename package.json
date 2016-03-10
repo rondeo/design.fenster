@@ -43,5 +43,6 @@
     "webpack-dev-server": "^1.12.1"
   },
   "dependencies": {
+    "dragula": "^3.6.8"
   }
 }

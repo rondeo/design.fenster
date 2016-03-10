@@ -27,16 +27,18 @@ html(lang='pt')
               .Fenster-toolbar-url.js-click(data-url="/pag1.html") Página 01
               .Fenster-toolbar-url.js-click(data-url="/pag2.html") Página 02
               .Fenster-toolbar-clear.js-click(data-url="") Clear
-          .Fenster.droppable(data-url="/pag1.html")
-          .Fenster.droppable(data-url="/pag1.html")
+          .Fenster.drop(data-url="/pag1.html")
+        .demo-divider
+        .demo-explanation
+          h2.demo-subtitle
       asside
         .demo-sidebar
           h2.demo-sidebar-title Lista de itens
-          ul.demo-sidebar-ul
-            li.demo-sidebar-li
-              .Fenster-dragglable(data-url="fixtures/materia-media.html") Matéria (Media)
-            li.demo-sidebar-li
-              .Fenster-dragglable(data-url="fixtures/materia-titles.html") Matéria (Title)
+          ul.demo-sidebar-ul.drop
+            li.demo-sidebar-li.drag(data-url="fixtures/materia-media.html")
+              .el Matéria (Media)
+            li.demo-sidebar-li.drag(data-url="fixtures/materia-titles.html")
+              .el Matéria (Title)
       footer
 
 
