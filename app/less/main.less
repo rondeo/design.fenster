@@ -5,13 +5,19 @@
 .container{
     margin: 0 auto;
     background-color: #eaeaea;
+    font-family: "Arial", "sans-serif";
+}
+
+.demo-divider{
+  width: 100%;
+  border-bottom: 1px solid #fff;
+  margin: 30px 0;
 }
 
 header{
     width:100%;
-    height: 250px;
+    height: 200px;
     text-align: center;
-    border-bottom:1px solid #fff;
 }
 
     .demo-img{
@@ -26,72 +32,145 @@ header{
         margin: auto;
     }
 
-main{
-    display: flex;
+    .demo-subtitle{
+      font-size: 24px;
+      margin: 5px 0;
+      color: #1E9789;
+    }
+
+    .demo-text{
+      font-family: "Courier", "Arial", 'serif', 'sans-serif';
+      font-size: 110%;
+      margin: 20px 0;
+    }
+
+    .demo-code{
+      border: 1px solid #ccc;
+      background-color: #333;
+      padding: 10px 15px 25px;
+      color: #fff;
+      font-family: "Monospace", "Courier", "Arial", 'serif', 'sans-serif';
+    }
+      [class*='demo-code--color'] {
+        font-weight: bold;
+      }
+
+      .demo-code--colorPrimary {
+        color: #1E9789;
+      }
+      .demo-code--colorRed {
+        color: red;
+      }
+      .demo-code--colorOrange {
+        color: orange;
+      }
+      .demo-code--colorCyan {
+        color: cyan;
+      }
+      .demo-code--colorViolet {
+        color: mediumpurple;
+      }
+      .demo-code--colorGreen {
+        color: yellowgreen;
+      }
+
+      .demo-code-line {
+        width: 100%;
+        border-bottom: 1px dotted #555;
+        display: block;
+      }
+
+  main{
+    height: 100%;
     min-height: 700px;
     border-bottom:1px solid #fff;
-}
+    position: relative;
+  }
 
-    .demo-content{
-        padding: 40px;
-        width: 50%;
-        min-height: 50%;
-        border: 1px solid #E2DFDF;
-        margin: auto;
-        background: #fff;
-        box-shadow: inset 0 0 10px #aaa;
+    .demo-wallpaper {
+      background-image: url('../assets/img/conjunto_fractais02.png');
+      background-position: 0 105%;
+      background-repeat: no-repeat;
+      position: absolute;
+      width: 25%;
+      height: 250px;
+      top: 0;
+      right:-15px;
     }
 
-    .Fenster{
+    section{
+      width: 100%;
+      display: flex;
+      padding:5px;
+    }
+      .demo-explanation-content{
+        background-color: #fff;
         width: 100%;
-        min-height: 380px;
-        min-width: 100px;
-        border: 1px solid #2EA799;
-        position: relative;
-    }
+        margin: 20px;
+        padding: 20px;
+        border:1px solid #ccc;
+      }
 
-        .Fenster-toolbar{
-            min-height: 20px;
-            width: 100%;
-            background-color: #2EA799;
-            padding: 5px 10px;
-            color: #FFF;
-            display: inline-flex;
-            cursor: pointer;
-            opacity: 0.5;
-            transition: 0.3s;
+      .demo-fenster-content{
+          padding: 40px;
+          width: 50%;
+          min-height: 50%;
+          border: 1px solid #E2DFDF;
+          margin: auto;
+          background: #fff;
+          box-shadow: inset 0 0 10px #aaa;
+      }
 
-            &:hover{
-              opacity: 1;
-            }
-        }
+      .Fenster{
+          width: 100%;
+          min-height: 380px;
+          min-width: 100px;
+          border: 1px solid #2EA799;
+          position: relative;
+      }
 
-          [class*="Fenster-toolbar-"]{
-            background-color: #fff;
-            color: #2EA799;
-            padding: 0 10px;
-            margin: 0 5px;
-            text-align: center;
-            border: 1px solid #1E9789;
-            float: left;
-            &:active{
-              color:#1E9789;
+          .Fenster-toolbar{
+              min-height: 20px;
+              width: 100%;
+              background-color: #2EA799;
+              padding: 5px 10px;
+              color: #FFF;
+              display: inline-flex;
+              cursor: pointer;
+              opacity: 0.5;
+              transition: 0.3s;
+
+              &:hover{
+                opacity: 1;
+              }
+          }
+
+            [class*="Fenster-toolbar-"]{
               background-color: #fff;
-              box-shadow: inset 5px 5px 10px #ddd;
-              font-size: 90%;
+              color: #2EA799;
+              padding: 0 10px;
+              margin: 0 5px;
+              text-align: center;
+              border: 1px solid #1E9789;
+              float: left;
+              &:active{
+                color:#1E9789;
+                background-color: #fff;
+                box-shadow: inset 5px 5px 10px #ddd;
+                font-size: 90%;
+              }
             }
-          }
 
-          .Fenster-toolbar-clear{
-            float: right;
-          }
+            .Fenster-toolbar-clear{
+              float: right;
+            }
 
-        .Fenster-content{
-            text-align: center;
-            width: 100%;
-            height:100%;
-            margin: auto;
-        }
+          .Fenster-content{
+              text-align: center;
+              width: 100%;
+              height:100%;
+              margin: auto;
+          }
 asside{
     position: fixed;
     top:0;
@@ -109,12 +188,6 @@ asside{
     background: #fff;
     box-shadow: inset 0 0 10px #aaa;
   }
-
-    .demo-sidebar-title{
-      font-size: 24px;
-      margin: 5px;
-      color: #1E9789;
-    }
 
     .demo-sidebar-ul{
       list-style: none;
@@ -144,7 +217,36 @@ asside{
     }
 
 
-footer{
+  footer{
+    background-image: url('../assets/img/conjunto_fractais02.png');
+    height: 100px;
+    background-position: 135% 100%;
+    background-repeat: no-repeat;
+  }
 
-    height: 200px;
+    .demo-copyright {
+      display: table;
+      height: 100%;
+    }
+
+      .demo-copyright-text {
+        display: table-cell;
+        vertical-align: bottom;
+        padding: 15px 0;
+      }
+
+
+/*Css para html nos fixtures*/
+.Fixture-PrimeiroBox {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
+
+.Fixture-PrimeiroBox-Title {
+  font-size: 32px;
+}
+
+.Fixture-PrimeiroBox-Text {
+  font-size: 16px;
 }

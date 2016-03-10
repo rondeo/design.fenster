@@ -23,6 +23,10 @@ var fensters = $('.Fenster').toArray().map(function (el) {
   return fenster($(el))
 })
 
+$('.FensterCode').toArray().map(function (el) {
+  return fenster($(el))
+})
+
 $('.js-click').on('click', function (e) {
   var url = $(e.currentTarget).data('url')
   fensters[0].url(url)
@@ -34,7 +38,7 @@ function myFunc() {
   var list = ['/h1.html', '/pag1.html', '/pag2.html', '/pag3.html']
   sto = setInterval(function () {
     console.log(fensters)
-    fensters[0].url(list[i])
+    fensters[1].url(list[i])
     i++
     if (i >= list.length) {
       clearTimeout(sto)

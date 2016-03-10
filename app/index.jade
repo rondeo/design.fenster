@@ -21,25 +21,57 @@ html(lang='pt')
         div
           h1.demo-title fenster
       main
-        .demo-content
-          .js-fenster-toolbar.Fenster-toolbar
-              .Fenster-toolbar-url.js-click(data-url="/h1.html") Página 00
-              .Fenster-toolbar-url.js-click(data-url="/pag1.html") Página 01
-              .Fenster-toolbar-url.js-click(data-url="/pag2.html") Página 02
-              .Fenster-toolbar-clear.js-click(data-url="") Clear
-          .Fenster.drop(data-url="/pag1.html")
         .demo-divider
-        .demo-explanation
-          h2.demo-subtitle
+        .demo-wallpaper
+        section
+          .demo-fenster-content
+            .demo-clear-fenster
+            .Fenster.drop(data-url="fixtures/primeiro-box.html")
+        section
+          .demo-explanation-content
+            h2.demo-subtitle Como utilizar fenster
+            p.demo-text
+              | Para utilizar o fenster, basta importar o modulo e iniciá-lo
+              | em algum elemento:
+            p.FensterCode(data-url="fixtures/code1.html")
+            p.demo-text
+              | Marcação em HTML do elemento:
+            p.FensterCode(data-url="fixtures/code2.html")
+            p.demo-text
+              | Se o elemento tiver na tag um atributo data-url,
+              | ele vai renderizar uma página com o valor passado por este atributo
+              | se não, utiliza-se o método url passando o valor da url desejada
+              | como parâmetro:
+            p.FensterCode(data-url="fixtures/code3.html")
+        .demo-divider
+        section
+          .demo-fenster-content
+            .js-fenster-toolbar.Fenster-toolbar
+                .Fenster-toolbar-url.js-click(data-url="/h1.html") Página 00
+                .Fenster-toolbar-url.js-click(data-url="/pag1.html") Página 01
+                .Fenster-toolbar-url.js-click(data-url="/pag2.html") Página 02
+                .Fenster-toolbar-clear.js-click(data-url="") Clear
+            .Fenster.drop(data-url="/pag1.html")
+        section
+          .demo-explanation-content
+            h2.demo-subtitle Exemplo prático um pouco mais complexo
+            p.demo-text
+              | O exemplo acima trás um exemplo de aplicação prática do fenster. É um carrossel
+              | com um loop percorrendo todos os elementos, parando de rodar quando chega no
+              | último. E acima do bloco de renderização há um toolbar com botões que fazem
+              | o fenster renderizar as urls passadas por cada botão. O botão <strong>clear
+              | </strong> limpa o conteúdo.
       asside
         .demo-sidebar
-          h2.demo-sidebar-title Lista de itens
+          h2.demo-subtitle Lista de itens
           ul.demo-sidebar-ul.drop
             li.demo-sidebar-li.drag(data-url="fixtures/materia-media.html")
               .el Matéria (Media)
             li.demo-sidebar-li.drag(data-url="fixtures/materia-titles.html")
               .el Matéria (Title)
       footer
+        .demo-copyright
+          p.demo-copyright-text Fenster©  2016
 
 
 
