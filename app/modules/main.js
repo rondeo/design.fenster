@@ -5,6 +5,7 @@ var $ = require('jquery')
 var fenster = require('./fenster')
 var dragula = require('dragula')
 
+/* Drágula - DragAnd Drop */
 dragula([$('.drop'), $('.Fenster')], {
   isContainer: function (el) {
     return el.classList.contains('drop')
@@ -18,12 +19,13 @@ dragula([$('.drop'), $('.Fenster')], {
 }).on('drop', function (el, target) {
   fenster(target).url($(el).data('url'))
 })
+/* Drágula - DragAnd Drop */
 
-var fensters = $('.Fenster').toArray().map(function (el) {
+$('.FensterCode').toArray().map(function (el) {
   return fenster($(el))
 })
 
-$('.FensterCode').toArray().map(function (el) {
+var fensters = $('.Fenster').toArray().map(function (el) {
   return fenster($(el))
 })
 
