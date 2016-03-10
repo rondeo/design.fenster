@@ -29,7 +29,7 @@ $('.FensterCode').toArray().map(function (el) {
 
 $('.js-click').on('click', function (e) {
   var url = $(e.currentTarget).data('url')
-  fensters[0].url(url)
+  fensters[1].url(url)
 })
 
 var sto;
