@@ -25,9 +25,9 @@ dragula([$('.drop'), $('.Fenster')], {
 
 $('.FensterCode').toArray().map(function (el) {
   var $el = $(el).on('load', function () {
-    var txt = $el.html()
-    $el.empty().text(txt)
-    $el.html(prismjs.highlight($el.html(), prismjs.languages.html))
+    var $code = $el.find('code:first')
+    var highlighted = prismjs.highlight($code.html(), prismjs.languages.html)
+    $code.empty().html(highlighted)
   })
 
   fenster($el)
