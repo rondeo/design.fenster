@@ -39,6 +39,9 @@ var Fenster = {
 
     this.r = $.ajax(this.$el.data('url'))
     this.r.then(this.render.bind(this))
+    .always(function () {
+      this.$el.trigger('load')
+    }.bind(this))
     .fail(function () {
       this.$el.empty()
     }.bind(this))

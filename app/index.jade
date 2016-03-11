@@ -7,7 +7,6 @@ html(lang='pt')
     title
     meta(name='viewport', content='width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no')
     link(href='styles/main.css', rel='stylesheet')
-
     link(href='https://fonts.googleapis.com/css?family=Quicksand:300' rel='stylesheet' type='text/css')
 
     style.
@@ -33,16 +32,16 @@ html(lang='pt')
             p.demo-text
               | Para utilizar o fenster, basta importar o modulo e iniciá-lo
               | em algum elemento:
-            p.FensterCode(data-url="fixtures/code1.html")
+            p.FensterCode(data-url="fixtures/code1.html", data-lang="html")
             p.demo-text
               | Marcação em HTML do elemento:
-            p.FensterCode(data-url="fixtures/code2.html")
+            p.FensterCode(data-url="fixtures/code2.html", data-lang="html")
             p.demo-text
               | Se o elemento tiver na tag um atributo data-url,
               | ele vai renderizar uma página com o valor passado por este atributo.
               | Se não, utiliza-se o método url do fenster passando o valor da url
               | desejada como parâmetro:
-            p.FensterCode(data-url="fixtures/code3.html")
+            p.FensterCode(data-url="fixtures/code3.html", data-lang="javascript")
         .demo-divider
         section
           .demo-fenster-content

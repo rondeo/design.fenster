@@ -4,6 +4,8 @@
 var $ = require('jquery')
 var fenster = require('./fenster')
 var dragula = require('dragula')
+var prismjs = require('prismjs')
+window.pjs = prismjs
 
 /* Drágula - DragAnd Drop */
 dragula([$('.drop'), $('.Fenster')], {
@@ -22,7 +24,13 @@ dragula([$('.drop'), $('.Fenster')], {
 /* Drágula - DragAnd Drop */
 
 $('.FensterCode').toArray().map(function (el) {
-  return fenster($(el))
+  var $el = $(el).on('load', function () {
+    var txt = $el.html()
+    $el.empty().text(txt)
+    $el.html(prismjs.highlight($el.html(), prismjs.languages.html))
+  })
+
+  fenster($el)
 })
 
 var fensters = $('.Fenster').toArray().map(function (el) {
@@ -49,5 +57,3 @@ function myFunc() {
 }
 
 myFunc()
-
-dragula([$('.drop-left'), $('.drop-right')])
