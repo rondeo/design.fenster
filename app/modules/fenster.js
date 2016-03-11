@@ -24,7 +24,7 @@ var Fenster = {
     } else {
       if (url) {
         this.$el.data('url', url)
-        this.el.dataset.url = url
+        this.$el.attr('data-url', url)
         this.fetch()
       } else {
         this.$el.empty()

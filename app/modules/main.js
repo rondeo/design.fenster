@@ -49,3 +49,5 @@ function myFunc() {
 }
 
 myFunc()
+
+dragula([$('.drop-left'), $('.drop-right')])
