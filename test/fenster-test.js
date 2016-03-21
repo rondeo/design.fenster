@@ -38,17 +38,6 @@ describe('<fenster>', function () {
       expect(component2).toBe(component)
     })
 
-    it('deve ficar em branco', function () {
-      expect($fenster).toBeEmpty()
-    })
-
-    it('não deve possuir altura', function () {
-      expect($fenster.height()).toBe(0)
-    })
-
-    it('deve ter a largura do parent', function () {
-      expect($fenster.width()).toBe($fenster.parent().width())
-    })
   })
 
   describe('depois do fetch', function () {
