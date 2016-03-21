@@ -12,11 +12,6 @@ module.exports = {
   externals: {
     jquery: 'jQuery'
   },
-  module: {
-    loaders: [
-      { test: /\.jade$/, loader: 'jade-loader' }
-    ]
-  },
   resolve: {
     modulesDirectories: [
       'node_modules',
