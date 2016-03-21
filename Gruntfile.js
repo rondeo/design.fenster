@@ -4,7 +4,7 @@ module.exports = function (grunt) {
   require('load-grunt-config')(grunt, {
     data : {
       config: {
-        app: 'app',
+        app: '.',
         dist: 'dist'
       }
     }

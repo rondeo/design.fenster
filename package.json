@@ -1,6 +1,6 @@
 {
   "name": "fenster",
-  "main": "app/modules/fenster.js",
+  "main": "modules/fenster.js",
   "version": "0.0.1",
   "devDependencies": {
     "babel-core": "^6.2.1",

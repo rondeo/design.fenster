@@ -5,7 +5,7 @@
 var $ = require('jquery')
 var responses = require('./fixtures/responses')
 
-jasmine.getFixtures().fixturesPath = 'base/app/test/fixtures/'
+jasmine.getFixtures().fixturesPath = 'base/test/fixtures/'
 
 var fenster = require('../modules/fenster.js')
 

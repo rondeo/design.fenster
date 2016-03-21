@@ -9,7 +9,7 @@ webpackConfig.devtool = 'eval'
 webpackConfig.module = {
   preLoaders: [{
     test: /\.js$/,
-    include: path.resolve('app/modules'),
+    include: path.resolve('modules'),
     loader: 'istanbul-instrumenter'
   }]
 }
@@ -26,8 +26,8 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'app/test/test.webpack.js',
-      { pattern: 'app/test/fixtures/*.html', included: false, served: true }
+      'test/test.webpack.js',
+      { pattern: 'test/fixtures/*.html', included: false, served: true }
     ],
 
     exclude: [],
@@ -35,8 +35,8 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'app/test/test.webpack.js': ['webpack'],
-      'app/modules/**/*.js': ['coverage']
+      'test/test.webpack.js': ['webpack'],
+      'modules/**/*.js': ['coverage']
     },
 
     webpack: webpackConfig,

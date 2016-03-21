@@ -3,7 +3,7 @@ var webpack = require('webpack')
 
 module.exports = {
   entry: {
-    'fenster': ['fenster']
+    fenster: ['fenster']
   },
   output: {
     path: __dirname + '/dist/scripts',
@@ -20,7 +20,7 @@ module.exports = {
   resolve: {
     modulesDirectories: [
       'node_modules',
-      __dirname + '/app/modules'
+      __dirname + '/modules'
     ]
   },
   plugins: [
