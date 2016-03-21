@@ -6,7 +6,7 @@ module.exports = {
     fenster: ['fenster']
   },
   output: {
-    path: __dirname + '/dist/scripts',
+    path: __dirname + '/dist',
     filename: '[name].min.js'
   },
   externals: {
