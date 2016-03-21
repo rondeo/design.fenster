@@ -1,17 +1,17 @@
 module.exports = {
-  page1 : {
+  page1: {
     status: 200,
     contentType: 'text/html;charset=UTF-8',
     responseText: 'page1'
   },
-  page2 : {
+  page2: {
     status: 200,
     contentType: 'text/html;charset=UTF-8',
     responseText: 'page2'
   },
-  error : {
+  error: {
     status: 500,
     contentType: 'text/html;charset=UTF-8',
     responseText: 'error'
-  },
+  }
 }

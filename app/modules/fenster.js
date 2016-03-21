@@ -2,33 +2,28 @@
 
 var $ = require('jquery')
 
-var Fenster = {
+var fenster = {
+
   init: function (el) {
     var $el = $(el)
     var plugin = $el.data('plugin-fenster')
-    if (plugin) {
-      return plugin
-    }
+    if (plugin) { return plugin }
 
-    $el.data('plugin-fenster', this)
-
-    this.$el = $el
-    this.el = this.$el.get(0)
+    this.$el = $el.data('plugin-fenster', this)
     this.fetch()
     return this
   },
 
-  url: function (url) {
-    if (url === undefined) {
-      return this.$el.data('url')
+  get src () {
+    return this.$el.data('src')
+  },
+
+  set src (src) {
+    if (src) {
+      this.$el.data('src', src)
+      this.fetch()
     } else {
-      if (url) {
-        this.$el.data('url', url)
-        this.$el.attr('data-url', url)
-        this.fetch()
-      } else {
-        this.$el.empty()
-      }
+      this.$el.empty()
     }
   },
 
@@ -37,21 +32,22 @@ var Fenster = {
       this.r.abort()
     }
 
-    this.r = $.ajax(this.$el.data('url'))
-    this.r.then(this.render.bind(this))
-    .always(function () {
-      this.$el.trigger('load')
-    }.bind(this))
+    var _this = this
+    this.r = $.ajax(this.src)
+    this.r.then(function (response) {
+      _this.render(response)
+      _this.$el.trigger('load')
+    })
     .fail(function () {
-      this.$el.empty()
-    }.bind(this))
+      _this.$el.empty()
+    })
   },
 
   render: function (text) {
     this.$el.html(text)
-  },
+  }
 }
 
 module.exports = function (el) {
-  return Object.create(Fenster).init(el)
+  return Object.create(fenster).init(el)
 }
