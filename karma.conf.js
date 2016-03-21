@@ -14,7 +14,7 @@ webpackConfig.module = {
   }]
 }
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -23,7 +23,6 @@ module.exports = function(config) {
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine-jquery', 'jasmine-ajax', 'jasmine'],
-
 
     // list of files / patterns to load in the browser
     files: [
@@ -58,7 +57,7 @@ module.exports = function(config) {
     port: 9876,
     colors: true,
 
-    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
+    // config (.LOG_DISABLE || .LOG_ERROR || .LOG_WARN || .LOG_INFO || .LOG_DEBUG)
     logLevel: config.LOG_INFO,
 
     // enable / disable watching file and executing tests whenever any file changes
@@ -67,8 +66,6 @@ module.exports = function(config) {
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: [
       'Chrome'
-      // , 'Firefox'
-      // , 'PhantomJS'
     ],
 
     // if true, Karma captures browsers, runs the tests and exits
