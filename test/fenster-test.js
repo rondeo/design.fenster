@@ -5,7 +5,7 @@
 var $ = require('jquery')
 var responses = require('./fixtures/responses')
 
-jasmine.getFixtures().fixturesPath = 'base/app/test/fixtures/'
+jasmine.getFixtures().fixturesPath = 'base/test/fixtures/'
 
 var fenster = require('../modules/fenster.js')
 
@@ -16,9 +16,11 @@ describe('<fenster>', function () {
 
   beforeEach(function () {
     loadFixtures('markup.html')
+
+    jasmine.Ajax.install()
+
     $fenster = $('#page1')
     component = fenster($fenster)
-    jasmine.Ajax.install()
   })
 
   afterEach(function () {
@@ -27,26 +29,15 @@ describe('<fenster>', function () {
 
   describe('antes do primeiro fetch', function () {
 
+    it('deve retornar o component depois da inicialização', function () {
+      expect(component).toBeDefined()
+    })
+
     it('deve retornar a mesma istância em caso de inicialização duplicada', function () {
       var component2 = fenster($fenster)
       expect(component2).toBe(component)
     })
 
-    it('deve retornar o component depois da inicialização', function () {
-      expect(component).toBeDefined()
-    })
-
-    it('deve ficar em branco', function () {
-      expect($fenster).toBeEmpty()
-    })
-
-    it('não deve possuir altura', function () {
-      expect($fenster.height()).toBe(0)
-    })
-
-    it('deve ter a largura do parent', function () {
-      expect($fenster.width()).toBe($fenster.parent().width())
-    })
   })
 
   describe('depois do fetch', function () {
@@ -68,7 +59,7 @@ describe('<fenster>', function () {
         })
 
         it('deve fazer uma requisição em data-url', function () {
-          expect(request.url).toBe(component.url())
+          expect(request.url).toBe(component.src)
           expect(request.method).toBe('GET')
         })
 
@@ -96,7 +87,7 @@ describe('<fenster>', function () {
       describe('vazio', function () {
         beforeEach(function () {
           component.fetch = jasmine.createSpy('fetch')
-          component.url('')
+          component.src = ''
         })
 
         it('deve limpar o componente', function () {
@@ -109,7 +100,7 @@ describe('<fenster>', function () {
       })
 
       it('deve recarregar o conteudo', function () {
-        component.url('/page1.html')
+        component.src = '/page1.html'
         mostRecentRequest().respondWith(responses.page1)
         expect($fenster).toContainHtml('page1')
       })
