@@ -34,12 +34,14 @@ var fenster = {
 
     var _this = this
     this.r = $.ajax(this.src)
-    this.r.then(function (response) {
+    return this.r.then(function (response) {
       _this.render(response)
       _this.$el.trigger('load')
     })
     .fail(function () {
       _this.$el.empty()
+      // TODO: se o nome do evento for error, dá erro nos testes. investigar.
+      _this.$el.trigger('fail')
     })
   },
 
