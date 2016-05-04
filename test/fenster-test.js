@@ -44,9 +44,24 @@ describe('<fenster>', function () {
 
     describe('quando houver uma requisição', function () {
       var request
+      var result
+      var onload
+      var onfail
+
       beforeEach(function () {
-        component.fetch()
+        result = component.fetch()
+
+        onload = jasmine.createSpy('onload')
+        onfail = jasmine.createSpy('onfail')
+
+        $fenster.on('load', onload)
+        $fenster.on('fail', onfail)
+
         request = mostRecentRequest()
+      })
+
+      it('deve retornar uma promise', function () {
+        expect(result.promise).toBeDefined()
       })
 
       describe('com sucesso', function () {
@@ -57,6 +72,10 @@ describe('<fenster>', function () {
         it('deve fazer uma requisição em data-url', function () {
           expect(request.url).toBe(component.src)
           expect(request.method).toBe('GET')
+        })
+
+        it('deve emitir o evento `load`', function () {
+          expect(onload).toHaveBeenCalled()
         })
 
         it('deve renderizar texto de resposta da request dentro do component', function () {
@@ -71,6 +90,10 @@ describe('<fenster>', function () {
 
         it('deve limpar o component', function () {
           expect($fenster).toBeEmpty()
+        })
+
+        it('deve emitir o evento `fail`', function () {
+          expect(onfail).toHaveBeenCalled()
         })
       })
     })
