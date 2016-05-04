@@ -7,7 +7,7 @@ var responses = require('./fixtures/responses')
 
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures/'
 
-var fenster = require('../modules/fenster.js')
+var fenster = require('../fenster.js')
 
 describe('<fenster>', function () {
   var $fenster
@@ -150,7 +150,7 @@ describe('<fenster>', function () {
   })
 
   describe('plugin jquery', function () {
-    require('../modules/fenster-jquery.js')
+    require('../jquery.js')
 
     var element
 
