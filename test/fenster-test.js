@@ -1,4 +1,4 @@
-/* global jasmine, describe, it, expect, beforeEach, loadFixtures, afterEach */
+/* global jasmine, describe, it, expect, beforeEach, loadFixtures, afterEach, spyOn */
 
 'use strict'
 
@@ -10,7 +10,6 @@ jasmine.getFixtures().fixturesPath = 'base/test/fixtures/'
 var fenster = require('../modules/fenster.js')
 
 describe('<fenster>', function () {
-
   var $fenster
   var component
 
@@ -28,7 +27,6 @@ describe('<fenster>', function () {
   })
 
   describe('antes do primeiro fetch', function () {
-
     it('deve retornar o component depois da inicialização', function () {
       expect(component).toBeDefined()
     })
@@ -37,11 +35,9 @@ describe('<fenster>', function () {
       var component2 = fenster($fenster)
       expect(component2).toBe(component)
     })
-
   })
 
   describe('depois do fetch', function () {
-
     var mostRecentRequest = function () {
       return jasmine.Ajax.requests.mostRecent()
     }
@@ -107,9 +103,7 @@ describe('<fenster>', function () {
     })
 
     describe('quando houver múltiplas requisições', function () {
-
       it('deve considerar sempre a última', function (done) {
-
         component.fetch()
 
         var firstRequest = mostRecentRequest()
@@ -128,11 +122,57 @@ describe('<fenster>', function () {
           expect('page2').toBe($fenster.html())
           done()
         }, 150)
-
       })
-
     })
-
   })
 
+  describe('plugin jquery', function () {
+    require('../modules/plugin.js')
+
+    var element
+
+    beforeEach(function () {
+      element = $('#page2')
+    })
+
+    it('deve publicar um plugin jquery', function () {
+      expect($.fn.fenster).toBeDefined()
+    })
+
+    it('deve inicializar um `fenster` pela chamada do plugin jquery', function () {
+      element.fenster()
+      expect(element.data('plugin-fenster')).not.toBeEmpty()
+    })
+
+    it('deve inicializar múltiplos componentes via composite pattern', function () {
+      var components = $('.js-fenster')
+      components.fenster()
+
+      expect(components.length).toBeGreaterThan(1)
+      components.each(function () {
+        expect($(this).data('plugin-fenster')).not.toBeEmpty()
+      })
+    })
+
+    it('deve impedir a criação duplicada', function () {
+      element.fenster()
+      var f1 = element.data('plugin-fenster')
+      element.fenster()
+      var f2 = element.data('plugin-fenster')
+      expect(f1).toBeDefined()
+      expect(f1).toBe(f2)
+    })
+
+    it('deve retonar o próprio elemento jquery', function () {
+      expect(element.fenster() instanceof $).toBe(true)
+    })
+
+    it('deve permitir a chamada de métodos estilo jquery', function () {
+      element.fenster()
+      component = element.data('plugin-fenster')
+      spyOn(component, 'fetch')
+      element.fenster('fetch')
+      expect(component.fetch).toHaveBeenCalled()
+    })
+  })
 })
