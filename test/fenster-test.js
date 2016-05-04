@@ -127,7 +127,7 @@ describe('<fenster>', function () {
   })
 
   describe('plugin jquery', function () {
-    require('../modules/plugin.js')
+    require('../modules/fenster-jquery.js')
 
     var element
 
