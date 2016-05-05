@@ -92,8 +92,8 @@ describe('<fenster>', function () {
           request.respondWith(responses.error)
         })
 
-        it('deve limpar o component', function () {
-          expect($fenster).toBeEmpty()
+        it('não deve limpar o component', function () {
+          expect($fenster).toContainText('START STATE')
         })
 
         it('deve emitir o evento `fail`', function () {
