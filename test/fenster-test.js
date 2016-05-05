@@ -78,6 +78,10 @@ describe('<fenster>', function () {
           expect(onload).toHaveBeenCalled()
         })
 
+        it('não deve emitir o evento `fail`', function () {
+          expect(onfail).not.toHaveBeenCalled()
+        })
+
         it('deve renderizar texto de resposta da request dentro do component', function () {
           expect($fenster).toContainHtml('page1')
         })
@@ -94,6 +98,10 @@ describe('<fenster>', function () {
 
         it('deve emitir o evento `fail`', function () {
           expect(onfail).toHaveBeenCalled()
+        })
+
+        it('não deve emitir o evento `load`', function () {
+          expect(onload).not.toHaveBeenCalled()
         })
       })
     })
