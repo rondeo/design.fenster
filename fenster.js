@@ -39,7 +39,6 @@ var fenster = {
       _this.$el.trigger('load')
     })
     .fail(function () {
-      _this.$el.empty()
       // TODO: se o nome do evento for error, dá erro nos testes. investigar.
       _this.$el.trigger('fail')
     })
