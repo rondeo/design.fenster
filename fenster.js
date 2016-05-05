@@ -10,7 +10,6 @@ var fenster = {
     if (plugin) { return plugin }
 
     this.$el = $el.data('plugin-fenster', this)
-    this.fetch()
     return this
   },
 
