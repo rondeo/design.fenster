@@ -47,21 +47,27 @@ describe('<fenster>', function () {
       var result
       var onload
       var onfail
+      var onfetch
 
       beforeEach(function () {
-        result = component.fetch()
-
         onload = jasmine.createSpy('onload')
         onfail = jasmine.createSpy('onfail')
+        onfetch = jasmine.createSpy('onfetch')
 
         $fenster.on('load', onload)
         $fenster.on('fail', onfail)
+        $fenster.on('fetch', onfetch)
 
+        result = component.fetch()
         request = mostRecentRequest()
       })
 
       it('deve retornar uma promise', function () {
         expect(result.promise).toBeDefined()
+      })
+
+      it('deve emitir o evento `fetch`', function () {
+        expect(onfetch).toHaveBeenCalled()
       })
 
       describe('com sucesso', function () {

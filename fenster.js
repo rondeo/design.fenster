@@ -32,6 +32,8 @@ var fenster = {
     }
 
     var _this = this
+    _this.$el.trigger('fetch')
+
     this.r = $.ajax(this.src)
     return this.r.then(function (response) {
       _this.render(response)
