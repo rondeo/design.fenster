@@ -3,11 +3,11 @@
 'use strict'
 
 var $ = require('jquery')
-var factory = require('../modules/fenster')
-var fenster = require('../modules/index')
-require('../modules/poll')
+var factory = require('../fenster')
+var fenster = require('../index')
+require('../poll')
 $.fn.fenster = 'old'
-require('../modules/plugin')
+require('../plugin')
 
 var responses = require('./fixtures/responses')
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures/'

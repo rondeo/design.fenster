@@ -15,7 +15,7 @@ module.exports = {
   resolve: {
     modulesDirectories: [
       'node_modules',
-      __dirname + '/modules'
+      __dirname
     ]
   },
   plugins: [
