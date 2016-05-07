@@ -1,4 +1,4 @@
-/* global jasmine, describe, it, expect, beforeEach, loadFixtures, afterEach, spyOn */
+/* global jasmine, describe, it, expect, beforeEach, loadFixtures, afterEach, spyOn, xit */
 
 'use strict'
 
@@ -7,13 +7,14 @@ var responses = require('./fixtures/responses')
 
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures/'
 
-var fenster = require('../modules/fenster.js')
+var factory = require('../modules/fenster.js')
+var fenster = require('../modules/index.js')
 
 var clockTick = function (v) {
   return jasmine.clock().tick(v * 1000)
 }
 
-var mostRecentRequest = function () {
+var lastRequest = function () {
   return jasmine.Ajax.requests.mostRecent()
 }
 
@@ -41,7 +42,7 @@ describe('<fenster>', function () {
       expect(component).toBeDefined()
     })
 
-    it('deve retornar a mesma istância em caso de inicialização duplicada', function () {
+    xit('deve retornar a mesma istância em caso de inicialização duplicada', function () {
       var component2 = fenster($fenster)
       expect(component2).toBe(component)
     })
@@ -50,9 +51,28 @@ describe('<fenster>', function () {
   describe('depois do fetch', function () {
     describe('quando houver uma requisição', function () {
       var request
+      var fetch
+      var onfail
+      var onfetch
+      var onload
+
       beforeEach(function () {
-        component.fetch()
-        request = mostRecentRequest()
+        onfail = jasmine.createSpy('fail')
+        onfetch = jasmine.createSpy('fetch')
+        onload = jasmine.createSpy('load')
+
+        $fenster.on('fail', onfail)
+        $fenster.on('load', onload)
+        $fenster.on('fetch', onfetch)
+
+        fetch = component.fetch()
+        request = lastRequest()
+      })
+
+      describe('promise', function () {
+        it('deve retornar uma promise', function () {
+          expect(fetch.promise).toBeDefined()
+        })
       })
 
       describe('com sucesso', function () {
@@ -68,6 +88,25 @@ describe('<fenster>', function () {
         it('deve renderizar texto de resposta da request dentro do component', function () {
           expect($fenster).toContainHtml('page1')
         })
+
+        it('deve disparar o evento onload', function () {
+          expect(onload).toHaveBeenCalled()
+        })
+
+        it('não deve disparar o evento onfail', function () {
+          expect(onfail).not.toHaveBeenCalled()
+        })
+
+        it('deve disparar o evento onfetch', function () {
+          expect(onfetch).toHaveBeenCalled()
+        })
+
+        it('deve dar sequência à promise', function (done) {
+          fetch.then(function () {
+            expect(onload).toHaveBeenCalled()
+            done()
+          })
+        })
       })
 
       describe('com erro', function () {
@@ -77,6 +116,25 @@ describe('<fenster>', function () {
 
         it('deve limpar o component', function () {
           expect($fenster).toBeEmpty()
+        })
+
+        it('deve disparar o evento onerror', function () {
+          expect(onfail).toHaveBeenCalled()
+        })
+
+        it('não deve disparar o evento onload', function () {
+          expect(onload).not.toHaveBeenCalled()
+        })
+
+        it('deve disparar o evento onfetch', function () {
+          expect(onfetch).toHaveBeenCalled()
+        })
+
+        it('deve dar sequência à promise', function (done) {
+          fetch.fail(function () {
+            expect(onfail).toHaveBeenCalled()
+            done()
+          })
         })
       })
     })
@@ -103,7 +161,7 @@ describe('<fenster>', function () {
 
       it('deve recarregar o conteudo', function () {
         component.src = '/page1.html'
-        mostRecentRequest().respondWith(responses.page1)
+        lastRequest().respondWith(responses.page1)
         expect($fenster).toContainHtml('page1')
       })
     })
@@ -112,14 +170,14 @@ describe('<fenster>', function () {
       it('deve considerar sempre a última', function () {
         component.fetch()
 
-        var firstRequest = mostRecentRequest()
+        var firstRequest = lastRequest()
         setTimeout(function () {
           firstRequest.respondWith(responses.page1)
         }, 100)
 
         component.fetch()
 
-        var secondRequest = mostRecentRequest()
+        var secondRequest = lastRequest()
         setTimeout(function () {
           secondRequest.respondWith(responses.page2)
         }, 50)
@@ -168,6 +226,47 @@ describe('<fenster>', function () {
       component.poll(100)
       clockTick(121)
       expect(component.fetch.calls.count()).toEqual(1)
+    })
+  })
+
+  $.fn.fenster = 'old'
+  describe('plugin jquery', function () {
+    require('../modules/jquery')
+
+    beforeEach(function () {
+      $fenster = $('.js-fenster')
+      component = $fenster.fenster()
+      spyOn(factory, 'fetch')
+    })
+
+    it('deve retornar o próprio objeto jquery', function () {
+      expect(component instanceof $).toBe(true)
+    })
+
+    it('deve retornar a mesma instância em caso de inicialização duplicada', function () {
+      var c1 = $fenster.data('plugin-fenster')
+      $fenster.fenster()
+      var c2 = $fenster.data('plugin-fenster')
+      expect(c1).toBe(c2)
+    })
+
+    it('deve aplicar o plugin em todos os elementos do objeto jQuery', function () {
+      expect($fenster.length).toBeGreaterThan(1)
+      $fenster.each(function () {
+        var plugin = $(this).data('plugin-fenster')
+        expect(factory.isPrototypeOf(plugin)).toBe(true)
+      })
+    })
+
+    it('deve permitir chamada de métodos depois da primeira inicialização', function () {
+      component.fenster('fetch')
+      expect($fenster.length).toBeGreaterThan(1)
+      expect(factory.fetch.calls.count()).toBe($fenster.length)
+    })
+
+    it('deve preservar a antiga instância do plugin jquery', function () {
+      $.fn.fenster.noConflict()
+      expect($.fn.fenster).toBe('old')
     })
   })
 })

@@ -2,14 +2,9 @@
 
 var $ = require('jquery')
 
-var fenster = {
-
+module.exports = {
   init: function (el) {
-    var $el = $(el)
-    var plugin = $el.data('plugin-fenster')
-    if (plugin) { return plugin }
-
-    this.$el = $el.data('plugin-fenster', this)
+    this.$el = el instanceof $ ? el : $(el)
     return this
   },
 
@@ -42,8 +37,13 @@ var fenster = {
       _this.$el.trigger('load')
     })
     .fail(function () {
+      _this.$el.trigger('fail')
       _this.$el.empty()
     })
+
+    this.$el.trigger('fetch', this.r)
+
+    return this.r
   },
 
   poll: function (seconds) {
@@ -57,6 +57,7 @@ var fenster = {
         _this.stopPoll()
       }
     }, seconds * 1000)
+    return this.pollId
   },
 
   stopPoll: function () {
@@ -68,8 +69,4 @@ var fenster = {
   render: function (text) {
     this.$el.html(text)
   }
-}
-
-module.exports = function (el) {
-  return Object.create(fenster).init(el)
 }

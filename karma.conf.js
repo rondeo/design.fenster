@@ -16,7 +16,6 @@ webpackConfig.module = {
 
 module.exports = function (config) {
   config.set({
-
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
@@ -42,7 +41,7 @@ module.exports = function (config) {
     webpack: webpackConfig,
 
     webpackServer: {
-      noInfo: true //please don't spam the console when running in karma!
+      noInfo: true // please don't spam the console when running in karma!
     },
 
     // test results reporter to use
