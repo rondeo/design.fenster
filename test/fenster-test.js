@@ -167,6 +167,15 @@ describe('<fenster>', function () {
     })
 
     describe('quando houver múltiplas requisições', function () {
+      it('não deve disparar o evento fail devido ao `abort`', function () {
+        var onfail = jasmine.createSpy('fail')
+        $fenster.on('fail', onfail)
+        component.fetch()
+        component.fetch()
+
+        expect(onfail).not.toHaveBeenCalled()
+      })
+
       it('deve considerar sempre a última', function () {
         component.fetch()
 

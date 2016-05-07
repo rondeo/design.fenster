@@ -36,8 +36,10 @@ module.exports = {
       _this.render(response)
       _this.$el.trigger('load')
     })
-    .fail(function () {
-      _this.$el.trigger('fail')
+    .fail(function (jqXHR, status) {
+      if (status !== 'abort') {
+        _this.$el.trigger('fail')
+      }
       _this.$el.empty()
     })
 
