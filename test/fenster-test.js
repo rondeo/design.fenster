@@ -3,12 +3,14 @@
 'use strict'
 
 var $ = require('jquery')
+var factory = require('../modules/fenster')
+var fenster = require('../modules/index')
+require('../modules/poll')
+$.fn.fenster = 'old'
+require('../modules/plugin')
+
 var responses = require('./fixtures/responses')
-
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures/'
-
-var factory = require('../modules/fenster.js')
-var fenster = require('../modules/index.js')
 
 var clockTick = function (v) {
   return jasmine.clock().tick(v * 1000)
@@ -238,9 +240,7 @@ describe('<fenster>', function () {
     })
   })
 
-  $.fn.fenster = 'old'
   describe('plugin jquery', function () {
-    require('../modules/plugin')
 
     beforeEach(function () {
       $fenster = $('.js-fenster')

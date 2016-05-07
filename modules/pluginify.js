@@ -1,12 +1,13 @@
 'use strict'
 
 var $ = require('jquery')
+var slice = [].slice
 
 module.exports = function (pluginName, factory) {
   var old = $.fn[pluginName]
 
   $.fn[pluginName] = function (optionsOrMethod) {
-    var args = Array.prototype.slice.call(arguments, 1)
+    var args = slice.call(arguments, 1)
     return this.each(function () {
       var plugin = $.data(this, 'plugin-' + pluginName)
       if (!plugin) {

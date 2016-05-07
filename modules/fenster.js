@@ -48,26 +48,6 @@ module.exports = {
     return this.r
   },
 
-  poll: function (seconds) {
-    var _this = this
-    this.stopPoll()
-    this.pollId = setInterval(function () {
-      // checar se está na DOM
-      if (_this.$el.closest(document.documentElement).length) {
-        _this.fetch()
-      } else {
-        _this.stopPoll()
-      }
-    }, seconds * 1000)
-    return this.pollId
-  },
-
-  stopPoll: function () {
-    if (this.pollId) {
-      clearInterval(this.pollId)
-    }
-  },
-
   render: function (text) {
     this.$el.html(text)
   }
