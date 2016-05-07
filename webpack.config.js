@@ -3,7 +3,7 @@ var webpack = require('webpack')
 
 module.exports = {
   entry: {
-    fenster: ['fenster']
+    fenster: ['index']
   },
   output: {
     path: __dirname + '/dist',
