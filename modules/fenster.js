@@ -10,7 +10,6 @@ var fenster = {
     if (plugin) { return plugin }
 
     this.$el = $el.data('plugin-fenster', this)
-    this.fetch()
     return this
   },
 
@@ -33,7 +32,11 @@ var fenster = {
     }
 
     var _this = this
-    this.r = $.ajax(this.src)
+    this.r = $.ajax({
+      url: this.src,
+      type: 'GET',
+      dataType: 'html'
+    })
     this.r.then(function (response) {
       _this.render(response)
       _this.$el.trigger('load')
@@ -41,6 +44,25 @@ var fenster = {
     .fail(function () {
       _this.$el.empty()
     })
+  },
+
+  poll: function (seconds) {
+    var _this = this
+    this.stopPoll()
+    this.pollId = setInterval(function () {
+      // checar se está na DOM
+      if (_this.$el.closest(document.documentElement).length) {
+        _this.fetch()
+      } else {
+        _this.stopPoll()
+      }
+    }, seconds * 1000)
+  },
+
+  stopPoll: function () {
+    if (this.pollId) {
+      clearInterval(this.pollId)
+    }
   },
 
   render: function (text) {

@@ -1,4 +1,4 @@
-/* global jasmine, describe, it, expect, beforeEach, loadFixtures, afterEach */
+/* global jasmine, describe, it, expect, beforeEach, loadFixtures, afterEach, spyOn */
 
 'use strict'
 
@@ -9,8 +9,15 @@ jasmine.getFixtures().fixturesPath = 'base/test/fixtures/'
 
 var fenster = require('../modules/fenster.js')
 
-describe('<fenster>', function () {
+var clockTick = function (v) {
+  return jasmine.clock().tick(v * 1000)
+}
 
+var mostRecentRequest = function () {
+  return jasmine.Ajax.requests.mostRecent()
+}
+
+describe('<fenster>', function () {
   var $fenster
   var component
 
@@ -18,6 +25,7 @@ describe('<fenster>', function () {
     loadFixtures('markup.html')
 
     jasmine.Ajax.install()
+    jasmine.clock().install()
 
     $fenster = $('#page1')
     component = fenster($fenster)
@@ -25,10 +33,10 @@ describe('<fenster>', function () {
 
   afterEach(function () {
     jasmine.Ajax.uninstall()
+    jasmine.clock().uninstall()
   })
 
   describe('antes do primeiro fetch', function () {
-
     it('deve retornar o component depois da inicialização', function () {
       expect(component).toBeDefined()
     })
@@ -37,15 +45,9 @@ describe('<fenster>', function () {
       var component2 = fenster($fenster)
       expect(component2).toBe(component)
     })
-
   })
 
   describe('depois do fetch', function () {
-
-    var mostRecentRequest = function () {
-      return jasmine.Ajax.requests.mostRecent()
-    }
-
     describe('quando houver uma requisição', function () {
       var request
       beforeEach(function () {
@@ -107,9 +109,7 @@ describe('<fenster>', function () {
     })
 
     describe('quando houver múltiplas requisições', function () {
-
-      it('deve considerar sempre a última', function (done) {
-
+      it('deve considerar sempre a última', function () {
         component.fetch()
 
         var firstRequest = mostRecentRequest()
@@ -124,15 +124,50 @@ describe('<fenster>', function () {
           secondRequest.respondWith(responses.page2)
         }, 50)
 
-        setTimeout(function () {
-          expect('page2').toBe($fenster.html())
-          done()
-        }, 150)
-
+        jasmine.clock().tick(101)
+        expect('page2').toBe($fenster.html())
       })
-
     })
-
   })
 
+  describe('poll', function () {
+    beforeEach(function () {
+      component.poll(120)
+      spyOn(component, 'fetch')
+      spyOn(component, 'stopPoll').and.callThrough()
+    })
+
+    it('deve atualizar a cada intervalo de tempo determinado', function () {
+      clockTick(1)
+
+      clockTick(120)
+      expect(component.fetch.calls.count()).toEqual(1)
+
+      clockTick(120)
+      expect(component.fetch.calls.count()).toEqual(2)
+
+      clockTick(100)
+      expect(component.fetch.calls.count()).toEqual(2)
+    })
+
+    it('deve permitir o cancelamento', function () {
+      clockTick(1)
+      component.stopPoll()
+
+      clockTick(120)
+      expect(component.fetch).not.toHaveBeenCalled()
+    })
+
+    it('deve cancelar o timeout depois de removido do DOM', function () {
+      $fenster.remove()
+      clockTick(121)
+      expect(component.fetch).not.toHaveBeenCalled()
+    })
+
+    it('deve cancelar o primeiro timeout se a chamada for duplicada', function () {
+      component.poll(100)
+      clockTick(121)
+      expect(component.fetch.calls.count()).toEqual(1)
+    })
+  })
 })
