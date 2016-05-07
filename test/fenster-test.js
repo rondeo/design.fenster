@@ -231,12 +231,13 @@ describe('<fenster>', function () {
 
   $.fn.fenster = 'old'
   describe('plugin jquery', function () {
-    require('../modules/jquery')
+    require('../modules/plugin')
 
     beforeEach(function () {
       $fenster = $('.js-fenster')
       component = $fenster.fenster()
       spyOn(factory, 'fetch')
+      spyOn(factory, 'poll')
     })
 
     it('deve retornar o próprio objeto jquery', function () {
@@ -262,6 +263,15 @@ describe('<fenster>', function () {
       component.fenster('fetch')
       expect($fenster.length).toBeGreaterThan(1)
       expect(factory.fetch.calls.count()).toBe($fenster.length)
+    })
+
+    it('deve chamar um método do plugin se chamado com argumentos', function () {
+      $fenster.fenster('fetch')
+      expect(factory.fetch).toHaveBeenCalled()
+
+      $fenster.fenster('poll', 120)
+      expect(factory.poll).toHaveBeenCalled()
+      expect(factory.poll.calls.argsFor(0)).toEqual([120])
     })
 
     it('deve preservar a antiga instância do plugin jquery', function () {
