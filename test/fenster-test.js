@@ -1,4 +1,4 @@
-/* global jasmine, describe, it, expect, beforeEach, loadFixtures, afterEach, spyOn */
+/* global jasmine, describe, it, expect, beforeEach, loadFixtures, afterEach, spyOn, spyOnEvent */
 
 'use strict'
 
@@ -48,18 +48,11 @@ describe('<fenster>', function () {
     describe('quando houver uma requisição', function () {
       var request
       var fetch
-      var onfail
-      var onfetch
-      var onload
 
       beforeEach(function () {
-        onfail = jasmine.createSpy('fail')
-        onfetch = jasmine.createSpy('fetch')
-        onload = jasmine.createSpy('load')
-
-        $fenster.on('fail', onfail)
-        $fenster.on('load', onload)
-        $fenster.on('fetch', onfetch)
+        spyOnEvent($fenster, 'fail')
+        spyOnEvent($fenster, 'fetch')
+        spyOnEvent($fenster, 'load')
 
         fetch = component.fetch()
         request = lastRequest()
@@ -86,20 +79,19 @@ describe('<fenster>', function () {
         })
 
         it('deve disparar o evento onload', function () {
-          expect(onload).toHaveBeenCalled()
+          expect('load').toHaveBeenTriggeredOn($fenster)
         })
 
         it('não deve disparar o evento onfail', function () {
-          expect(onfail).not.toHaveBeenCalled()
+          expect('fail').not.toHaveBeenTriggeredOn($fenster)
         })
 
         it('deve disparar o evento onfetch', function () {
-          expect(onfetch).toHaveBeenCalled()
+          expect('fetch').toHaveBeenTriggeredOn($fenster)
         })
 
         it('deve dar sequência à promise', function (done) {
           fetch.then(function () {
-            expect(onload).toHaveBeenCalled()
             done()
           })
         })
@@ -115,20 +107,19 @@ describe('<fenster>', function () {
         })
 
         it('deve disparar o evento onerror', function () {
-          expect(onfail).toHaveBeenCalled()
+          expect('fail').toHaveBeenTriggeredOn($fenster)
         })
 
         it('não deve disparar o evento onload', function () {
-          expect(onload).not.toHaveBeenCalled()
+          expect('load').not.toHaveBeenTriggeredOn($fenster)
         })
 
         it('deve disparar o evento onfetch', function () {
-          expect(onfetch).toHaveBeenCalled()
+          expect('fetch').toHaveBeenTriggeredOn($fenster)
         })
 
         it('deve dar sequência à promise', function (done) {
           fetch.fail(function () {
-            expect(onfail).toHaveBeenCalled()
             done()
           })
         })
