@@ -237,6 +237,12 @@ describe('<fenster>', function () {
       expect(component instanceof $).toBe(true)
     })
 
+    xit('deve inicializar e carregar no `domready` os elementos [data-fenster]', function () {
+      $.ready()
+      var $autoFenster = $('[data-fenster]')
+      expect($autoFenster.data('plugin-fenster')).toBeDefined()
+    })
+
     it('deve retornar a mesma instância em caso de inicialização duplicada', function () {
       var c1 = $fenster.data('plugin-fenster')
       $fenster.fenster()
