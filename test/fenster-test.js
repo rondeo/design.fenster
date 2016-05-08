@@ -1,4 +1,4 @@
-/* global jasmine, describe, it, expect, beforeEach, loadFixtures, afterEach, spyOn, xit */
+/* global jasmine, describe, it, expect, beforeEach, loadFixtures, afterEach, spyOn */
 
 'use strict'
 
@@ -26,7 +26,6 @@ describe('<fenster>', function () {
 
   beforeEach(function () {
     loadFixtures('markup.html')
-
     jasmine.Ajax.install()
     jasmine.clock().install()
 
@@ -42,11 +41,6 @@ describe('<fenster>', function () {
   describe('antes do primeiro fetch', function () {
     it('deve retornar o component depois da inicialização', function () {
       expect(component).toBeDefined()
-    })
-
-    xit('deve retornar a mesma istância em caso de inicialização duplicada', function () {
-      var component2 = fenster($fenster)
-      expect(component2).toBe(component)
     })
   })
 
@@ -241,7 +235,6 @@ describe('<fenster>', function () {
   })
 
   describe('plugin jquery', function () {
-
     beforeEach(function () {
       $fenster = $('.js-fenster')
       component = $fenster.fenster()
