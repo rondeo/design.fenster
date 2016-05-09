@@ -2,14 +2,9 @@
 
 var $ = require('jquery')
 
-var fenster = {
-
+module.exports = {
   init: function (el) {
-    var $el = $(el)
-    var plugin = $el.data('plugin-fenster')
-    if (plugin) { return plugin }
-
-    this.$el = $el.data('plugin-fenster', this)
+    this.$el = el instanceof $ ? el : $(el)
     return this
   },
 
@@ -32,24 +27,27 @@ var fenster = {
     }
 
     var _this = this
-    _this.$el.trigger('fetch')
-
-    this.r = $.ajax(this.src)
-    return this.r.then(function (response) {
+    this.r = $.ajax({
+      url: this.src,
+      type: 'GET',
+      dataType: 'html'
+    })
+    this.r.then(function (response) {
       _this.render(response)
       _this.$el.trigger('load')
     })
-    .fail(function () {
-      // TODO: se o nome do evento for error, dá erro nos testes. investigar.
-      _this.$el.trigger('fail')
+    .fail(function (jqXHR, status) {
+      if (status !== 'abort') {
+        _this.$el.trigger('fail')
+      }
     })
+
+    this.$el.trigger('fetch', this.r)
+
+    return this.r
   },
 
   render: function (text) {
     this.$el.html(text)
   }
-}
-
-module.exports = function (el) {
-  return Object.create(fenster).init(el)
 }
