@@ -1,13 +1,25 @@
-/* global jasmine, describe, it, expect, beforeEach, loadFixtures, afterEach, spyOn */
+/* global jasmine, describe, it, expect, beforeEach, loadFixtures, afterEach, spyOn, spyOnEvent, xit */
 
 'use strict'
 
 var $ = require('jquery')
-var responses = require('./fixtures/responses')
+var baseObject = require('../fenster')
+var fenster = require('../index')
 
+$.fn.fenster = 'old'
+require('../plugin')
+require('../poll')
+
+var responses = require('./fixtures/responses')
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures/'
 
-var fenster = require('../fenster.js')
+var clockTick = function (v) {
+  return jasmine.clock().tick(v * 1000)
+}
+
+var lastRequest = function () {
+  return jasmine.Ajax.requests.mostRecent()
+}
 
 describe('<fenster>', function () {
   var $fenster
@@ -15,8 +27,8 @@ describe('<fenster>', function () {
 
   beforeEach(function () {
     loadFixtures('markup.html')
-
     jasmine.Ajax.install()
+    jasmine.clock().install()
 
     $fenster = $('#page1')
     component = fenster($fenster)
@@ -24,50 +36,33 @@ describe('<fenster>', function () {
 
   afterEach(function () {
     jasmine.Ajax.uninstall()
+    jasmine.clock().uninstall()
   })
 
   describe('antes do primeiro fetch', function () {
     it('deve retornar o component depois da inicialização', function () {
       expect(component).toBeDefined()
     })
-
-    it('deve retornar a mesma istância em caso de inicialização duplicada', function () {
-      var component2 = fenster($fenster)
-      expect(component2).toBe(component)
-    })
   })
 
   describe('depois do fetch', function () {
-    var mostRecentRequest = function () {
-      return jasmine.Ajax.requests.mostRecent()
-    }
-
     describe('quando houver uma requisição', function () {
       var request
-      var result
-      var onload
-      var onfail
-      var onfetch
+      var fetch
 
       beforeEach(function () {
-        onload = jasmine.createSpy('onload')
-        onfail = jasmine.createSpy('onfail')
-        onfetch = jasmine.createSpy('onfetch')
+        spyOnEvent($fenster, 'fail')
+        spyOnEvent($fenster, 'fetch')
+        spyOnEvent($fenster, 'load')
 
-        $fenster.on('load', onload)
-        $fenster.on('fail', onfail)
-        $fenster.on('fetch', onfetch)
-
-        result = component.fetch()
-        request = mostRecentRequest()
+        fetch = component.fetch()
+        request = lastRequest()
       })
 
-      it('deve retornar uma promise', function () {
-        expect(result.promise).toBeDefined()
-      })
-
-      it('deve emitir o evento `fetch`', function () {
-        expect(onfetch).toHaveBeenCalled()
+      describe('promise', function () {
+        it('deve retornar uma promise', function () {
+          expect(fetch.promise).toBeDefined()
+        })
       })
 
       describe('com sucesso', function () {
@@ -80,16 +75,26 @@ describe('<fenster>', function () {
           expect(request.method).toBe('GET')
         })
 
-        it('deve emitir o evento `load`', function () {
-          expect(onload).toHaveBeenCalled()
-        })
-
-        it('não deve emitir o evento `fail`', function () {
-          expect(onfail).not.toHaveBeenCalled()
-        })
-
         it('deve renderizar texto de resposta da request dentro do component', function () {
           expect($fenster).toContainHtml('page1')
+        })
+
+        it('deve disparar o evento onload', function () {
+          expect('load').toHaveBeenTriggeredOn($fenster)
+        })
+
+        it('não deve disparar o evento onfail', function () {
+          expect('fail').not.toHaveBeenTriggeredOn($fenster)
+        })
+
+        it('deve disparar o evento onfetch', function () {
+          expect('fetch').toHaveBeenTriggeredOn($fenster)
+        })
+
+        it('deve dar sequência à promise', function (done) {
+          fetch.then(function () {
+            done()
+          })
         })
       })
 
@@ -102,12 +107,22 @@ describe('<fenster>', function () {
           expect($fenster).toContainText('START STATE')
         })
 
-        it('deve emitir o evento `fail`', function () {
-          expect(onfail).toHaveBeenCalled()
+        it('deve disparar o evento onerror', function () {
+          expect('fail').toHaveBeenTriggeredOn($fenster)
         })
 
-        it('não deve emitir o evento `load`', function () {
-          expect(onload).not.toHaveBeenCalled()
+        it('não deve disparar o evento onload', function () {
+          expect('load').not.toHaveBeenTriggeredOn($fenster)
+        })
+
+        it('deve disparar o evento onfetch', function () {
+          expect('fetch').toHaveBeenTriggeredOn($fenster)
+        })
+
+        it('deve dar sequência à promise', function (done) {
+          fetch.fail(function () {
+            done()
+          })
         })
       })
     })
@@ -134,82 +149,169 @@ describe('<fenster>', function () {
 
       it('deve recarregar o conteudo', function () {
         component.src = '/page1.html'
-        mostRecentRequest().respondWith(responses.page1)
+        lastRequest().respondWith(responses.page1)
         expect($fenster).toContainHtml('page1')
       })
     })
 
     describe('quando houver múltiplas requisições', function () {
-      it('deve considerar sempre a última', function (done) {
+      it('não deve disparar o evento fail devido ao `abort`', function () {
+        var onfail = jasmine.createSpy('fail')
+        $fenster.on('fail', onfail)
+        component.fetch()
         component.fetch()
 
-        var firstRequest = mostRecentRequest()
+        expect(onfail).not.toHaveBeenCalled()
+      })
+
+      it('deve considerar sempre a última', function () {
+        component.fetch()
+
+        var firstRequest = lastRequest()
         setTimeout(function () {
           firstRequest.respondWith(responses.page1)
         }, 100)
 
         component.fetch()
 
-        var secondRequest = mostRecentRequest()
+        var secondRequest = lastRequest()
         setTimeout(function () {
           secondRequest.respondWith(responses.page2)
         }, 50)
 
-        setTimeout(function () {
-          expect('page2').toBe($fenster.html())
-          done()
-        }, 150)
+        jasmine.clock().tick(101)
+        expect('page2').toBe($fenster.html())
       })
     })
   })
 
-  describe('plugin jquery', function () {
-    require('../jquery.js')
-
-    var element
-
+  describe('poll', function () {
     beforeEach(function () {
-      element = $('#page2')
+      component.poll(120)
+      spyOn(component, 'fetch')
+      spyOn(component, 'stopPoll').and.callThrough()
+    })
+
+    it('deve atualizar a cada intervalo de tempo determinado', function () {
+      clockTick(1)
+
+      clockTick(120)
+      expect(component.fetch.calls.count()).toEqual(1)
+
+      clockTick(120)
+      expect(component.fetch.calls.count()).toEqual(2)
+
+      clockTick(100)
+      expect(component.fetch.calls.count()).toEqual(2)
+    })
+
+    it('deve atualizar antes do primeiro intervalo se o parâmetro start for passado', function () {
+      component.poll(120, true)
+      clockTick(1)
+      expect(component.fetch.calls.count()).toEqual(1)
+    })
+
+    it('deve permitir o cancelamento', function () {
+      clockTick(1)
+      component.stopPoll()
+
+      clockTick(120)
+      expect(component.fetch).not.toHaveBeenCalled()
+    })
+
+    it('deve cancelar o timeout depois de removido do DOM', function () {
+      $fenster.remove()
+      clockTick(121)
+      expect(component.fetch).not.toHaveBeenCalled()
+    })
+
+    it('deve cancelar o primeiro timeout se a chamada for duplicada', function () {
+      component.poll(100)
+      clockTick(121)
+      expect(component.fetch.calls.count()).toEqual(1)
+    })
+  })
+
+  describe('autopoll', function () {
+    beforeEach(function () {
+      spyOn(baseObject, 'fetch')
+      spyOn(baseObject, 'poll').and.callThrough()
+      component = fenster($('.js-fensterpoll'))
+    })
+
+    it('deve disparar poll automaticamente se [data-poll-interval]', function () {
+      expect(baseObject.poll.calls.count()).toEqual(1)
+    })
+
+    it('deve disparar fetch automaticamente se [data-poll-interval]', function () {
+      expect(baseObject.fetch.calls.count()).toEqual(1)
+    })
+
+    it('deve executar o fetch a cada pollInterval', function () {
+      clockTick(1)
+      expect(baseObject.fetch.calls.count()).toEqual(1)
+      clockTick(5)
+      expect(baseObject.fetch.calls.count()).toEqual(2)
+      clockTick(5)
+      expect(baseObject.fetch.calls.count()).toEqual(3)
+    })
+  })
+
+  describe('plugin jquery', function () {
+    beforeEach(function () {
+      $fenster = $('.js-fenster')
+      component = $fenster.fenster()
+      spyOn(baseObject, 'fetch')
+      spyOn(baseObject, 'poll')
     })
 
     it('deve publicar um plugin jquery', function () {
       expect($.fn.fenster).toBeDefined()
     })
 
-    it('deve inicializar um `fenster` pela chamada do plugin jquery', function () {
-      element.fenster()
-      expect(element.data('plugin-fenster')).not.toBeEmpty()
+    it('deve retornar o próprio objeto jquery', function () {
+      expect(component instanceof $).toBe(true)
+    })
+
+    xit('deve inicializar e carregar no `domready` os elementos [data-fenster]', function () {
+      var $autoFenster = $('[data-fenster]')
+      expect($autoFenster.data('plugin-fenster')).toBeDefined()
+    })
+
+    it('deve retornar a mesma instância em caso de inicialização duplicada', function () {
+      var c1 = $fenster.first().data('plugin-fenster')
+      $fenster.fenster()
+      var c2 = $fenster.first().data('plugin-fenster')
+      expect(c1).toBeDefined()
+      expect(c1).toBe(c2)
     })
 
     it('deve inicializar múltiplos componentes via composite pattern', function () {
-      var components = $('.js-fenster')
-      components.fenster()
-
-      expect(components.length).toBeGreaterThan(1)
-      components.each(function () {
-        expect($(this).data('plugin-fenster')).not.toBeEmpty()
+      expect($fenster.length).toBeGreaterThan(1)
+      $fenster.each(function () {
+        var plugin = $(this).data('plugin-fenster')
+        expect(baseObject.isPrototypeOf(plugin)).toBe(true)
       })
     })
 
-    it('deve impedir a criação duplicada', function () {
-      element.fenster()
-      var f1 = element.data('plugin-fenster')
-      element.fenster()
-      var f2 = element.data('plugin-fenster')
-      expect(f1).toBeDefined()
-      expect(f1).toBe(f2)
-    })
-
-    it('deve retonar o próprio elemento jquery', function () {
-      expect(element.fenster() instanceof $).toBe(true)
+    it('deve permitir chamada de métodos depois da primeira inicialização', function () {
+      $fenster.fenster('fetch')
+      expect($fenster.length).toBeGreaterThan(1)
+      expect(baseObject.fetch.calls.count()).toBe($fenster.length)
     })
 
     it('deve permitir a chamada de métodos estilo jquery', function () {
-      element.fenster()
-      component = element.data('plugin-fenster')
-      spyOn(component, 'fetch')
-      element.fenster('fetch')
-      expect(component.fetch).toHaveBeenCalled()
+      $fenster.fenster('fetch')
+      expect(baseObject.fetch).toHaveBeenCalled()
+
+      $fenster.fenster('poll', 120)
+      expect(baseObject.poll).toHaveBeenCalled()
+      expect(baseObject.poll.calls.argsFor(0)).toEqual([120])
+    })
+
+    it('deve preservar a antiga instância do plugin jquery', function () {
+      $.fn.fenster.noConflict()
+      expect($.fn.fenster).toBe('old')
     })
   })
 })
