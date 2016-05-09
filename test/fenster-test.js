@@ -1,4 +1,4 @@
-/* global jasmine, describe, it, expect, beforeEach, loadFixtures, afterEach, spyOn, spyOnEvent */
+/* global jasmine, describe, it, expect, beforeEach, loadFixtures, afterEach, spyOn, spyOnEvent, xit */
 
 'use strict'
 
@@ -102,8 +102,8 @@ describe('<fenster>', function () {
           request.respondWith(responses.error)
         })
 
-        it('deve limpar o component', function () {
-          expect($fenster).toBeEmpty()
+        it('não deve limpar o component', function () {
+          expect($fenster).toContainText('START STATE')
         })
 
         it('deve disparar o evento onerror', function () {
@@ -233,8 +233,22 @@ describe('<fenster>', function () {
       spyOn(factory, 'poll')
     })
 
+    it('deve publicar um plugin jquery', function () {
+      expect($.fn.fenster).toBeDefined()
+    })
+
     it('deve retornar o próprio objeto jquery', function () {
       expect(component instanceof $).toBe(true)
+    })
+
+    it('deve impedir a criação duplicada', function () {
+      var element = $fenster.first()
+      element.fenster()
+      var f1 = element.data('plugin-fenster')
+      element.fenster()
+      var f2 = element.data('plugin-fenster')
+      expect(f1).toBeDefined()
+      expect(f1).toBe(f2)
     })
 
     xit('deve inicializar e carregar no `domready` os elementos [data-fenster]', function () {
@@ -250,7 +264,7 @@ describe('<fenster>', function () {
       expect(c1).toBe(c2)
     })
 
-    it('deve aplicar o plugin em todos os elementos do objeto jQuery', function () {
+    it('deve inicializar múltiplos componentes via composite pattern', function () {
       expect($fenster.length).toBeGreaterThan(1)
       $fenster.each(function () {
         var plugin = $(this).data('plugin-fenster')
@@ -264,7 +278,7 @@ describe('<fenster>', function () {
       expect(factory.fetch.calls.count()).toBe($fenster.length)
     })
 
-    it('deve chamar um método do plugin se chamado com argumentos', function () {
+    it('deve permitir a chamada de métodos estilo jquery', function () {
       $fenster.fenster('fetch')
       expect(factory.fetch).toHaveBeenCalled()
 
