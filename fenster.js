@@ -40,7 +40,6 @@ module.exports = {
       if (status !== 'abort') {
         _this.$el.trigger('fail')
       }
-      _this.$el.empty()
     })
 
     this.$el.trigger('fetch', this.r)

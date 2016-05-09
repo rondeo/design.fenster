@@ -1,6 +1,6 @@
 {
   "name": "fenster",
-  "main": "modules/fenster.js",
+  "main": "index.js",
   "version": "0.0.9",
   "devDependencies": {
     "grunt": "^1.0.1",

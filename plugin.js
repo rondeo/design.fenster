@@ -1,8 +1,8 @@
 'use strict'
 
 var pluginify = require('./pluginify')
-var fenster = require('./fenster')
+var factory = require('./index')
 
-pluginify('fenster', fenster)
+pluginify('fenster', factory)
 
-module.exports = fenster
+module.exports = factory

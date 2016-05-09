@@ -11,8 +11,7 @@ module.exports = function (pluginName, factory) {
     return this.each(function () {
       var plugin = $.data(this, 'plugin-' + pluginName)
       if (!plugin) {
-        plugin = Object.create(factory)
-        $.data(this, 'plugin-' + pluginName, plugin.init(this, optionsOrMethod))
+        $.data(this, 'plugin-' + pluginName, factory(this, optionsOrMethod))
       } else if (plugin[optionsOrMethod]) {
         plugin[optionsOrMethod].apply(plugin, args)
       }

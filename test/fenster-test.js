@@ -3,7 +3,7 @@
 'use strict'
 
 var $ = require('jquery')
-var factory = require('../fenster')
+var baseObject = require('../fenster')
 var fenster = require('../index')
 require('../poll')
 $.fn.fenster = 'old'
@@ -204,6 +204,12 @@ describe('<fenster>', function () {
       expect(component.fetch.calls.count()).toEqual(2)
     })
 
+    it('deve atualizar antes do primeiro intervalo se o parâmetro start for passado', function () {
+      component.poll(120, true)
+      clockTick(1)
+      expect(component.fetch.calls.count()).toEqual(1)
+    })
+
     it('deve permitir o cancelamento', function () {
       clockTick(1)
       component.stopPoll()
@@ -225,12 +231,38 @@ describe('<fenster>', function () {
     })
   })
 
+  describe('autopoll', function () {
+    beforeEach(function () {
+      spyOn(baseObject, 'fetch')
+      spyOn(baseObject, 'stopPoll').and.callThrough()
+      component = fenster($('.js-fensterpoll'))
+    })
+
+    it('deve disparar poll automaticamente se [data-poll-interval]', function () {
+      expect(component.pollId).toBeDefined()
+    })
+
+    it('deve disparar fetch automaticamente se [data-poll-interval]', function () {
+      expect(component.pollId).toBeDefined()
+      expect(baseObject.fetch.calls.count()).toEqual(1)
+    })
+
+    it('deve executar o fetch a cada pollInterval', function () {
+      clockTick(1)
+      expect(baseObject.fetch.calls.count()).toEqual(1)
+      clockTick(5)
+      expect(baseObject.fetch.calls.count()).toEqual(2)
+      clockTick(5)
+      expect(baseObject.fetch.calls.count()).toEqual(3)
+    })
+  })
+
   describe('plugin jquery', function () {
     beforeEach(function () {
       $fenster = $('.js-fenster')
       component = $fenster.fenster()
-      spyOn(factory, 'fetch')
-      spyOn(factory, 'poll')
+      spyOn(baseObject, 'fetch')
+      spyOn(baseObject, 'poll')
     })
 
     it('deve publicar um plugin jquery', function () {
@@ -252,7 +284,6 @@ describe('<fenster>', function () {
     })
 
     xit('deve inicializar e carregar no `domready` os elementos [data-fenster]', function () {
-      $.ready()
       var $autoFenster = $('[data-fenster]')
       expect($autoFenster.data('plugin-fenster')).toBeDefined()
     })
@@ -268,23 +299,23 @@ describe('<fenster>', function () {
       expect($fenster.length).toBeGreaterThan(1)
       $fenster.each(function () {
         var plugin = $(this).data('plugin-fenster')
-        expect(factory.isPrototypeOf(plugin)).toBe(true)
+        expect(baseObject.isPrototypeOf(plugin)).toBe(true)
       })
     })
 
     it('deve permitir chamada de métodos depois da primeira inicialização', function () {
       component.fenster('fetch')
       expect($fenster.length).toBeGreaterThan(1)
-      expect(factory.fetch.calls.count()).toBe($fenster.length)
+      expect(baseObject.fetch.calls.count()).toBe($fenster.length)
     })
 
     it('deve permitir a chamada de métodos estilo jquery', function () {
       $fenster.fenster('fetch')
-      expect(factory.fetch).toHaveBeenCalled()
+      expect(baseObject.fetch).toHaveBeenCalled()
 
       $fenster.fenster('poll', 120)
-      expect(factory.poll).toHaveBeenCalled()
-      expect(factory.poll.calls.argsFor(0)).toEqual([120])
+      expect(baseObject.poll).toHaveBeenCalled()
+      expect(baseObject.poll.calls.argsFor(0)).toEqual([120])
     })
 
     it('deve preservar a antiga instância do plugin jquery', function () {
