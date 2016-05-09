@@ -1,4 +1,4 @@
-var fenster = require('fenster')
+var fenster = require('./fenster')
 
 fenster._init = fenster.init
 
