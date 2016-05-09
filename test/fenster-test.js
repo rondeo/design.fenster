@@ -5,9 +5,10 @@
 var $ = require('jquery')
 var baseObject = require('../fenster')
 var fenster = require('../index')
-require('../poll')
+
 $.fn.fenster = 'old'
 require('../plugin')
+require('../poll')
 
 var responses = require('./fixtures/responses')
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures/'
@@ -234,16 +235,15 @@ describe('<fenster>', function () {
   describe('autopoll', function () {
     beforeEach(function () {
       spyOn(baseObject, 'fetch')
-      spyOn(baseObject, 'stopPoll').and.callThrough()
+      spyOn(baseObject, 'poll').and.callThrough()
       component = fenster($('.js-fensterpoll'))
     })
 
     it('deve disparar poll automaticamente se [data-poll-interval]', function () {
-      expect(component.pollId).toBeDefined()
+      expect(baseObject.poll.calls.count()).toEqual(1)
     })
 
     it('deve disparar fetch automaticamente se [data-poll-interval]', function () {
-      expect(component.pollId).toBeDefined()
       expect(baseObject.fetch.calls.count()).toEqual(1)
     })
 
@@ -273,25 +273,16 @@ describe('<fenster>', function () {
       expect(component instanceof $).toBe(true)
     })
 
-    it('deve impedir a criação duplicada', function () {
-      var element = $fenster.first()
-      element.fenster()
-      var f1 = element.data('plugin-fenster')
-      element.fenster()
-      var f2 = element.data('plugin-fenster')
-      expect(f1).toBeDefined()
-      expect(f1).toBe(f2)
-    })
-
     xit('deve inicializar e carregar no `domready` os elementos [data-fenster]', function () {
       var $autoFenster = $('[data-fenster]')
       expect($autoFenster.data('plugin-fenster')).toBeDefined()
     })
 
     it('deve retornar a mesma instância em caso de inicialização duplicada', function () {
-      var c1 = $fenster.data('plugin-fenster')
+      var c1 = $fenster.first().data('plugin-fenster')
       $fenster.fenster()
-      var c2 = $fenster.data('plugin-fenster')
+      var c2 = $fenster.first().data('plugin-fenster')
+      expect(c1).toBeDefined()
       expect(c1).toBe(c2)
     })
 
@@ -304,7 +295,7 @@ describe('<fenster>', function () {
     })
 
     it('deve permitir chamada de métodos depois da primeira inicialização', function () {
-      component.fenster('fetch')
+      $fenster.fenster('fetch')
       expect($fenster.length).toBeGreaterThan(1)
       expect(baseObject.fetch.calls.count()).toBe($fenster.length)
     })
