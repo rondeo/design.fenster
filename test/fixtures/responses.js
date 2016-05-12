@@ -13,5 +13,9 @@ module.exports = {
     status: 500,
     contentType: 'text/html;charset=UTF-8',
     responseText: 'error'
+  },
+  empty: {
+    status: 204,
+    responseText: ''
   }
 }

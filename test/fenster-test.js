@@ -65,6 +65,15 @@ describe('<fenster>', function () {
         })
       })
 
+      describe('vazia', function () {
+        beforeEach(function () {
+          request.respondWith(responses.empty)
+        })
+        it('deve limpar o componente', function () {
+          expect($fenster).toBeEmpty()
+        })
+      })
+
       describe('com sucesso', function () {
         beforeEach(function () {
           request.respondWith(responses.page1)
