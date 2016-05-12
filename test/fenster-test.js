@@ -241,9 +241,32 @@ describe('<fenster>', function () {
     })
   })
 
+  describe('stop autopoll on errors', function () {
+    beforeEach(function () {
+      spyOn(baseObject, 'fetch').and.callThrough()
+      component.poll(10)
+    })
+
+    it('deve parar o poll assim que receber 5 erros consecutivos', function () {
+      var calls = baseObject.fetch.calls
+
+      clockTick(1)
+      for (var i = 1; i <= 5; i++) {
+        clockTick(10)
+        expect(calls.count()).toEqual(i)
+        lastRequest().respondWith(responses.error)
+      }
+
+      clockTick(10)
+      expect(calls.count()).toEqual(5)
+      clockTick(10)
+      expect(calls.count()).toEqual(5)
+    })
+  })
+
   describe('autopoll', function () {
     beforeEach(function () {
-      spyOn(baseObject, 'fetch')
+      spyOn(baseObject, 'fetch').and.callThrough()
       spyOn(baseObject, 'poll').and.callThrough()
       component = fenster($('.js-fensterpoll'))
     })
