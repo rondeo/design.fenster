@@ -32,6 +32,7 @@ module.exports = {
       type: 'GET',
       dataType: 'html'
     })
+
     this.r.then(function (response) {
       _this.render(response)
       _this.$el.trigger('load')
@@ -43,11 +44,10 @@ module.exports = {
     })
 
     this.$el.trigger('fetch', this.r)
-
     return this.r
   },
 
   render: function (text) {
-    this.$el.html(text)
+    this.$el.html(text !== undefined ? text : '')
   }
 }

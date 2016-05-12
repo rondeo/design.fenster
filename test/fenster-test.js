@@ -65,6 +65,15 @@ describe('<fenster>', function () {
         })
       })
 
+      describe('vazia', function () {
+        beforeEach(function () {
+          request.respondWith(responses.empty)
+        })
+        it('deve limpar o componente', function () {
+          expect($fenster).toBeEmpty()
+        })
+      })
+
       describe('com sucesso', function () {
         beforeEach(function () {
           request.respondWith(responses.page1)
@@ -187,22 +196,23 @@ describe('<fenster>', function () {
 
   describe('poll', function () {
     beforeEach(function () {
-      component.poll(120)
-      spyOn(component, 'fetch')
+      spyOn(component, 'fetch').and.callThrough()
       spyOn(component, 'stopPoll').and.callThrough()
+      component.poll(120)
     })
 
     it('deve atualizar a cada intervalo de tempo determinado', function () {
+      var calls = component.fetch.calls
+
       clockTick(1)
+      clockTick(120)
+      expect(calls.count()).toEqual(1)
 
       clockTick(120)
-      expect(component.fetch.calls.count()).toEqual(1)
-
-      clockTick(120)
-      expect(component.fetch.calls.count()).toEqual(2)
+      expect(calls.count()).toEqual(2)
 
       clockTick(100)
-      expect(component.fetch.calls.count()).toEqual(2)
+      expect(calls.count()).toEqual(2)
     })
 
     it('deve atualizar antes do primeiro intervalo se o parâmetro start for passado', function () {
@@ -232,9 +242,32 @@ describe('<fenster>', function () {
     })
   })
 
+  describe('stop autopoll on errors', function () {
+    beforeEach(function () {
+      spyOn(baseObject, 'fetch').and.callThrough()
+      component.poll(10)
+    })
+
+    it('deve parar o poll assim que receber 5 erros consecutivos', function () {
+      var calls = baseObject.fetch.calls
+
+      clockTick(1)
+      for (var i = 1; i <= 5; i++) {
+        clockTick(10)
+        expect(calls.count()).toEqual(i)
+        lastRequest().respondWith(responses.error)
+      }
+
+      clockTick(10)
+      expect(calls.count()).toEqual(5)
+      clockTick(10)
+      expect(calls.count()).toEqual(5)
+    })
+  })
+
   describe('autopoll', function () {
     beforeEach(function () {
-      spyOn(baseObject, 'fetch')
+      spyOn(baseObject, 'fetch').and.callThrough()
       spyOn(baseObject, 'poll').and.callThrough()
       component = fenster($('.js-fensterpoll'))
     })

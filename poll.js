@@ -11,6 +11,8 @@ fenster.init = function () {
     this.poll()
   }
 
+  this.errors = 0
+
   return this
 }
 
@@ -22,13 +24,28 @@ fenster.poll = function (seconds, headStart) {
     // checar se está na DOM
     if (_this.$el.closest(document.documentElement).length) {
       _this.fetch()
+      .then(function () {
+        _this.errors = 0
+      })
+      .fail(function (jqXHR, status) {
+        if (status !== 'abort') {
+          _this.errors = _this.errors + 1
+        }
+      })
+      .always(function () {
+        if (_this.errors > 4) {
+          _this.stopPoll()
+        }
+      })
     } else {
       _this.stopPoll()
     }
   }, seconds * 1000)
+
   if (headStart) {
     this.fetch()
   }
+
   return this.pollId
 }
 
