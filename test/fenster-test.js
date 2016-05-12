@@ -196,22 +196,23 @@ describe('<fenster>', function () {
 
   describe('poll', function () {
     beforeEach(function () {
-      component.poll(120)
-      spyOn(component, 'fetch')
+      spyOn(component, 'fetch').and.callThrough()
       spyOn(component, 'stopPoll').and.callThrough()
+      component.poll(120)
     })
 
     it('deve atualizar a cada intervalo de tempo determinado', function () {
+      var calls = component.fetch.calls
+
       clockTick(1)
+      clockTick(120)
+      expect(calls.count()).toEqual(1)
 
       clockTick(120)
-      expect(component.fetch.calls.count()).toEqual(1)
-
-      clockTick(120)
-      expect(component.fetch.calls.count()).toEqual(2)
+      expect(calls.count()).toEqual(2)
 
       clockTick(100)
-      expect(component.fetch.calls.count()).toEqual(2)
+      expect(calls.count()).toEqual(2)
     })
 
     it('deve atualizar antes do primeiro intervalo se o parâmetro start for passado', function () {
