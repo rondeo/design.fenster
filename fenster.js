@@ -12,9 +12,9 @@ module.exports = {
     return this.$el.data('src')
   },
 
-  set src (src) {
-    if (src) {
-      this.$el.data('src', src)
+  set src (value) {
+    if (value) {
+      this.$el.data('src', value)
       this.fetch()
     } else {
       this.$el.empty()
