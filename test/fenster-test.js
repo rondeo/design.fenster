@@ -197,22 +197,25 @@ describe('<fenster>', function () {
   describe('poll', function () {
     beforeEach(function () {
       spyOn(component, 'fetch').and.callThrough()
-      spyOn(component, 'stopPoll').and.callThrough()
+      spyOn(component, 'halt').and.callThrough()
+
       component.poll(120)
     })
 
     it('deve atualizar a cada intervalo de tempo determinado', function () {
-      var calls = component.fetch.calls
+      var fetch = component.fetch.calls
 
       clockTick(1)
-      clockTick(120)
-      expect(calls.count()).toEqual(1)
+      expect(fetch.count()).toEqual(0)
 
       clockTick(120)
-      expect(calls.count()).toEqual(2)
+      expect(fetch.count()).toEqual(1)
+
+      clockTick(120)
+      expect(fetch.count()).toEqual(2)
 
       clockTick(100)
-      expect(calls.count()).toEqual(2)
+      expect(fetch.count()).toEqual(2)
     })
 
     it('deve atualizar antes do primeiro intervalo se o parâmetro start for passado', function () {
@@ -223,7 +226,7 @@ describe('<fenster>', function () {
 
     it('deve permitir o cancelamento', function () {
       clockTick(1)
-      component.stopPoll()
+      component.halt()
 
       clockTick(120)
       expect(component.fetch).not.toHaveBeenCalled()
@@ -242,7 +245,7 @@ describe('<fenster>', function () {
     })
   })
 
-  describe('stop autopoll on errors', function () {
+  describe('parada automática do poll', function () {
     beforeEach(function () {
       spyOn(baseObject, 'fetch').and.callThrough()
       component.poll(10)
@@ -265,7 +268,7 @@ describe('<fenster>', function () {
     })
   })
 
-  describe('autopoll', function () {
+  describe('poll automático', function () {
     beforeEach(function () {
       spyOn(baseObject, 'fetch').and.callThrough()
       spyOn(baseObject, 'poll').and.callThrough()
@@ -327,12 +330,6 @@ describe('<fenster>', function () {
       })
     })
 
-    it('deve permitir chamada de métodos depois da primeira inicialização', function () {
-      $fenster.fenster('fetch')
-      expect($fenster.length).toBeGreaterThan(1)
-      expect(baseObject.fetch.calls.count()).toBe($fenster.length)
-    })
-
     it('deve permitir a chamada de métodos estilo jquery', function () {
       $fenster.fenster('fetch')
       expect(baseObject.fetch).toHaveBeenCalled()
@@ -340,6 +337,12 @@ describe('<fenster>', function () {
       $fenster.fenster('poll', 120)
       expect(baseObject.poll).toHaveBeenCalled()
       expect(baseObject.poll.calls.argsFor(0)).toEqual([120])
+    })
+
+    it('deve permitir chamada de métodos em todos os elementos do composite', function () {
+      $fenster.fenster('fetch')
+      expect($fenster.length).toBeGreaterThan(1)
+      expect(baseObject.fetch.calls.count()).toBe($fenster.length)
     })
 
     it('deve preservar a antiga instância do plugin jquery', function () {

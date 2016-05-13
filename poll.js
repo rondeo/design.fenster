@@ -2,13 +2,15 @@ var fenster = require('./fenster')
 
 fenster._init = fenster.init
 
-fenster.init = function () {
-  fenster._init.apply(this, [].slice.call(arguments))
+var slice = [].slice
 
-  this.pollInterval = this.$el.data('pollInterval')
-  if (this.pollInterval) {
+fenster.init = function () {
+  fenster._init.apply(this, slice.call(arguments))
+
+  var interval = this.$el.data('pollInterval')
+  if (interval) {
     this.fetch()
-    this.poll()
+    this.poll(interval)
   }
 
   this.errors = 0
@@ -16,30 +18,34 @@ fenster.init = function () {
   return this
 }
 
-fenster.poll = function (seconds, headStart) {
-  seconds = seconds || this.pollInterval
+fenster._poll = function () {
   var _this = this
-  this.stopPoll()
-  this.pollId = setInterval(function () {
     // checar se está na DOM
-    if (_this.$el.closest(document.documentElement).length) {
-      _this.fetch()
-      .then(function () {
-        _this.errors = 0
-      })
-      .fail(function (jqXHR, status) {
-        if (status !== 'abort') {
-          _this.errors = _this.errors + 1
-        }
-      })
-      .always(function () {
-        if (_this.errors > 4) {
-          _this.stopPoll()
-        }
-      })
-    } else {
-      _this.stopPoll()
-    }
+  if (this.$el.closest(document.documentElement).length) {
+    this.fetch()
+    .then(function () {
+      _this.errors = 0
+    })
+    .fail(function (jqXHR, status) {
+      if (status !== 'abort') {
+        _this.errors++
+      }
+    })
+    .always(function () {
+      if (_this.errors > 4) {
+        _this.halt()
+      }
+    })
+  } else {
+    this.halt()
+  }
+}
+
+fenster.poll = function (seconds, headStart) {
+  var _this = this
+  this.halt()
+  this.pollId = setInterval(function () {
+    _this._poll()
   }, seconds * 1000)
 
   if (headStart) {
@@ -49,7 +55,7 @@ fenster.poll = function (seconds, headStart) {
   return this.pollId
 }
 
-fenster.stopPoll = function () {
+fenster.halt = function () {
   if (this.pollId) {
     clearInterval(this.pollId)
   }

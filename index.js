@@ -1,5 +1,3 @@
-'use strict'
-
 var fenster = require('./fenster')
 
 module.exports = function (el) {
