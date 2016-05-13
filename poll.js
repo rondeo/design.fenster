@@ -2,13 +2,15 @@ var fenster = require('./fenster')
 
 fenster._init = fenster.init
 
-fenster.init = function () {
-  fenster._init.apply(this, [].slice.call(arguments))
+var slice = [].slice
 
-  this.interval = this.$el.data('pollInterval')
-  if (this.interval) {
+fenster.init = function () {
+  fenster._init.apply(this, slice.call(arguments))
+
+  var interval = this.$el.data('pollInterval')
+  if (interval) {
     this.fetch()
-    this.poll()
+    this.poll(interval)
   }
 
   this.errors = 0
@@ -19,8 +21,8 @@ fenster.init = function () {
 fenster._poll = function () {
   var _this = this
     // checar se está na DOM
-  if (_this.$el.closest(document.documentElement).length) {
-    _this.fetch()
+  if (this.$el.closest(document.documentElement).length) {
+    this.fetch()
     .then(function () {
       _this.errors = 0
     })
