@@ -5,8 +5,8 @@ fenster._init = fenster.init
 fenster.init = function () {
   fenster._init.apply(this, [].slice.call(arguments))
 
-  this.pollInterval = this.$el.data('pollInterval')
-  if (this.pollInterval) {
+  this.interval = this.$el.data('pollInterval')
+  if (this.interval) {
     this.fetch()
     this.poll()
   }
@@ -17,7 +17,7 @@ fenster.init = function () {
 }
 
 fenster.poll = function (seconds, headStart) {
-  seconds = seconds || this.pollInterval
+  seconds = seconds || this.interval
   var _this = this
   this.stopPoll()
   this.pollId = setInterval(function () {
