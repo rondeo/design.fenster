@@ -245,7 +245,7 @@ describe('<fenster>', function () {
     })
   })
 
-  describe('stop autopoll on errors', function () {
+  describe('parada automática do poll', function () {
     beforeEach(function () {
       spyOn(baseObject, 'fetch').and.callThrough()
       component.poll(10)
@@ -268,7 +268,7 @@ describe('<fenster>', function () {
     })
   })
 
-  describe('autopoll', function () {
+  describe('poll automático', function () {
     beforeEach(function () {
       spyOn(baseObject, 'fetch').and.callThrough()
       spyOn(baseObject, 'poll').and.callThrough()
