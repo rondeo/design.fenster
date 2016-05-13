@@ -33,18 +33,17 @@ fenster._poll = function () {
     })
     .always(function () {
       if (_this.errors > 4) {
-        _this.stopPoll()
+        _this.halt()
       }
     })
   } else {
-    _this.stopPoll()
+    this.halt()
   }
 }
 
 fenster.poll = function (seconds, headStart) {
-  seconds = seconds || this.interval
   var _this = this
-  this.stopPoll()
+  this.halt()
   this.pollId = setInterval(function () {
     _this._poll()
   }, seconds * 1000)
@@ -56,7 +55,7 @@ fenster.poll = function (seconds, headStart) {
   return this.pollId
 }
 
-fenster.stopPoll = function () {
+fenster.halt = function () {
   if (this.pollId) {
     clearInterval(this.pollId)
   }

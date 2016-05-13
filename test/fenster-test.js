@@ -197,7 +197,7 @@ describe('<fenster>', function () {
   describe('poll', function () {
     beforeEach(function () {
       spyOn(component, 'fetch').and.callThrough()
-      spyOn(component, 'stopPoll').and.callThrough()
+      spyOn(component, 'halt').and.callThrough()
 
       component.poll(120)
     })
@@ -226,7 +226,7 @@ describe('<fenster>', function () {
 
     it('deve permitir o cancelamento', function () {
       clockTick(1)
-      component.stopPoll()
+      component.halt()
 
       clockTick(120)
       expect(component.fetch).not.toHaveBeenCalled()
