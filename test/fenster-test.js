@@ -330,12 +330,6 @@ describe('<fenster>', function () {
       })
     })
 
-    it('deve permitir chamada de métodos depois da primeira inicialização', function () {
-      $fenster.fenster('fetch')
-      expect($fenster.length).toBeGreaterThan(1)
-      expect(baseObject.fetch.calls.count()).toBe($fenster.length)
-    })
-
     it('deve permitir a chamada de métodos estilo jquery', function () {
       $fenster.fenster('fetch')
       expect(baseObject.fetch).toHaveBeenCalled()
@@ -343,6 +337,12 @@ describe('<fenster>', function () {
       $fenster.fenster('poll', 120)
       expect(baseObject.poll).toHaveBeenCalled()
       expect(baseObject.poll.calls.argsFor(0)).toEqual([120])
+    })
+
+    it('deve permitir chamada de métodos em todos os elementos do composite', function () {
+      $fenster.fenster('fetch')
+      expect($fenster.length).toBeGreaterThan(1)
+      expect(baseObject.fetch.calls.count()).toBe($fenster.length)
     })
 
     it('deve preservar a antiga instância do plugin jquery', function () {
