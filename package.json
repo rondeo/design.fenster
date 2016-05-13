@@ -1,7 +1,7 @@
 {
   "name": "fenster",
   "main": "index.js",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-autoprefixer": "^3.0.3",
