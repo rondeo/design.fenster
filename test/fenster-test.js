@@ -1,4 +1,4 @@
-/* global jasmine, describe, it, expect, beforeEach, loadFixtures, afterEach, spyOn, spyOnEvent, xit */
+/* global jasmine, describe, it, expect, beforeEach, spyOn, spyOnEvent, xit */
 
 'use strict'
 
@@ -7,12 +7,10 @@ var baseObject = require('../fenster')
 var fenster = require('../index')
 var obergaden = require('../obergaden')
 
-$.fn.fenster = 'old'
-require('../plugin/index')
 require('../poll')
+require('../plugin/index')
 
 var responses = require('./fixtures/responses')
-jasmine.getFixtures().fixturesPath = 'base/test/fixtures/'
 
 var clockTick = function (v) {
   return jasmine.clock().tick(v * 1000)
