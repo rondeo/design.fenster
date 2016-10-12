@@ -1,11 +1,10 @@
 var fenster = require('./fenster')
-
-fenster._init = fenster.init
-
 var slice = [].slice
 
+var _init = fenster.init
+
 fenster.init = function () {
-  fenster._init.apply(this, slice.call(arguments))
+  _init.apply(this, slice.call(arguments))
 
   var interval = this.$el.data('pollInterval')
   if (interval) {
