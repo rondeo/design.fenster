@@ -356,9 +356,13 @@ describe('<fenster>', function () {
 
     describe('operações', function () {
       beforeEach(function () {
+        // group_1
         parts[0].fetch()
         lastRequest().respondWith(responses.page1)
         parts[1].fetch()
+        lastRequest().respondWith(responses.page2)
+        // group_2
+        parts[2].fetch()
         lastRequest().respondWith(responses.page2)
       })
 
@@ -389,13 +393,20 @@ describe('<fenster>', function () {
         beforeEach(function () {
           component.flush()
         })
+
         it('deve atualizar os componentes', function () {
           expect($parts[0]).toContainHtml('page1')
           expect($parts[1]).toContainHtml('page2')
         })
+
         it('deve desmarcar os componentes', function () {
-          expect($parts).not.toHaveClass('is-pending')
+          expect($parts[0]).not.toHaveClass('is-pending')
+          expect($parts[1]).not.toHaveClass('is-pending')
           expect($obergaden).not.toHaveClass('is-pending')
+        })
+
+        it('deve cuidar só dos elementos do mesmo grupo', function () {
+          expect($parts[2]).toHaveClass('is-pending')
         })
       })
     })
