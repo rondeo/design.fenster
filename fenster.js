@@ -47,5 +47,6 @@ module.exports = {
 
   render: function (text) {
     this.$el.html(text !== undefined ? text : '')
+    this.$el.trigger('render')
   }
 }

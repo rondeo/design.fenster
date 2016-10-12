@@ -36,6 +36,7 @@ describe('<fenster>', function () {
     spyOnEvent($fenster, 'fail')
     spyOnEvent($fenster, 'fetch')
     spyOnEvent($fenster, 'load')
+    spyOnEvent($fenster, 'render')
   })
 
   describe('antes do primeiro fetch', function () {
@@ -74,6 +75,11 @@ describe('<fenster>', function () {
 
       it('deve renderizar texto de resposta da request dentro do component', function () {
         expect($fenster).toContainHtml('page1')
+      })
+
+      it('deve emitir o evento render', function () {
+        expect($fenster).toContainHtml('page1')
+        expect('render').toHaveBeenTriggeredOn($fenster)
       })
 
       it('deve disparar o evento onload', function () {
@@ -288,6 +294,10 @@ describe('<fenster>', function () {
 
     it('não deve atualizar ao fetch', function () {
       expect($groupedElement).toContainHtml('INITIAL_STATE')
+    })
+
+    it('não deve disparar o evento render ao fetch', function () {
+      expect($groupedElement).not.toHaveBeenTriggeredOn('render')
     })
 
     it('deve marcar com a classe is-pending', function () {
