@@ -1877,12 +1877,6 @@ istanbul@^0.4.0:
     which "^1.1.1"
     wordwrap "^1.0.0"
 
-jade-loader@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/jade-loader/-/jade-loader-0.8.0.tgz#d1b09971a9bf90a2b298b0af5b1ad0300d109c2e"
-  dependencies:
-    loader-utils "~0.2.5"
-
 jasmine-ajax@^3.0.0, jasmine-ajax@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/jasmine-ajax/-/jasmine-ajax-3.2.0.tgz#0a1600b7d3c503a3904f80679b867985a84e4756"
@@ -2078,7 +2072,7 @@ load-json-file@^1.0.0:
     pinkie-promise "^2.0.0"
     strip-bom "^2.0.0"
 
-loader-utils@^0.2.11, loader-utils@^0.2.16, loader-utils@^0.2.5, loader-utils@~0.2.5:
+loader-utils@^0.2.11, loader-utils@^0.2.16, loader-utils@^0.2.5:
   version "0.2.16"
   resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-0.2.16.tgz#f08632066ed8282835dff88dfb52704765adee6d"
   dependencies:
