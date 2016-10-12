@@ -347,7 +347,7 @@ describe('<fenster>', function () {
         lastRequest().respondWith(responses.page2)
       })
 
-      it('deve contar as operações pendentes', function () {
+      it('deve contar as operações pendentes apenas de seu grupo', function () {
         expect(component.pendingOperations).toBe(2)
       })
 
@@ -361,7 +361,7 @@ describe('<fenster>', function () {
         expect(component.pendingOperations).toBe(2)
 
         parts[0].fetch()
-        lastRequest().respondWith(responses.error)
+        lastRequest().respondWith(responses.page1)
         expect(component.pendingOperations).toBe(2)
       })
 
