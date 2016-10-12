@@ -290,6 +290,10 @@ describe('<fenster>', function () {
       expect($groupedElement).toContainHtml('INITIAL_STATE')
     })
 
+    it('deve marcar com a classe is-pending', function () {
+      expect($groupedElement).toHaveClass('is-pending')
+    })
+
     it('deve disparar o evento updateAvailable', function () {
       expect('updateAvailable').toHaveBeenTriggeredOn($groupedElement)
     })
@@ -349,11 +353,6 @@ describe('<fenster>', function () {
 
       it('deve liberar ao click', function () {
         expect($obergaden).toHandleWith('click', component.flush)
-      })
-
-      it('deve marcar os fenster', function () {
-        expect($parts[0]).toHaveClass('is-pending')
-        expect($parts[1]).toHaveClass('is-pending')
       })
 
       it('deve contar apenas uma atualização para cada fenster', function () {
