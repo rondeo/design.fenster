@@ -44,152 +44,139 @@ describe('<fenster>', function () {
     })
   })
 
-  describe('depois do fetch', function () {
-    describe('quando houver uma requisição', function () {
-      var request
-      var fetch
+  describe('quando houver uma requisição', function () {
+    var request
+    var fetch
 
-      beforeEach(function () {
-        spyOnEvent($fenster, 'fail')
-        spyOnEvent($fenster, 'fetch')
-        spyOnEvent($fenster, 'load')
-
-        fetch = component.fetch()
-        request = lastRequest()
-      })
-
-      describe('promise', function () {
-        it('deve retornar uma promise', function () {
-          expect(fetch.promise).toBeDefined()
-        })
-      })
-
-      describe('vazia', function () {
-        beforeEach(function () {
-          request.respondWith(responses.empty)
-        })
-        it('deve limpar o componente', function () {
-          expect($fenster).toBeEmpty()
-        })
-      })
-
-      describe('com sucesso', function () {
-        beforeEach(function () {
-          request.respondWith(responses.page1)
-        })
-
-        it('deve fazer uma requisição em data-url', function () {
-          expect(request.url).toBe(component.src)
-          expect(request.method).toBe('GET')
-        })
-
-        it('deve renderizar texto de resposta da request dentro do component', function () {
-          expect($fenster).toContainHtml('page1')
-        })
-
-        it('deve disparar o evento onload', function () {
-          expect('load').toHaveBeenTriggeredOn($fenster)
-        })
-
-        it('não deve disparar o evento onfail', function () {
-          expect('fail').not.toHaveBeenTriggeredOn($fenster)
-        })
-
-        it('deve disparar o evento onfetch', function () {
-          expect('fetch').toHaveBeenTriggeredOn($fenster)
-        })
-
-        it('deve dar sequência à promise', function (done) {
-          fetch.then(function () {
-            done()
-          })
-        })
-      })
-
-      describe('com erro', function () {
-        beforeEach(function () {
-          request.respondWith(responses.error)
-        })
-
-        it('não deve limpar o component', function () {
-          expect($fenster).toContainText('INITIAL_STATE')
-        })
-
-        it('deve disparar o evento onerror', function () {
-          expect('fail').toHaveBeenTriggeredOn($fenster)
-        })
-
-        it('não deve disparar o evento onload', function () {
-          expect('load').not.toHaveBeenTriggeredOn($fenster)
-        })
-
-        it('deve disparar o evento onfetch', function () {
-          expect('fetch').toHaveBeenTriggeredOn($fenster)
-        })
-
-        it('deve dar sequência à promise', function (done) {
-          fetch.fail(function () {
-            done()
-          })
-        })
-      })
+    beforeEach(function () {
+      fetch = component.fetch()
+      request = lastRequest()
     })
 
-    describe('ao setar o atributo url', function () {
+    it('deve retornar uma promise', function () {
+      expect(fetch.promise).toBeDefined()
+    })
+
+    it('deve limpar o componente se a resposta for vazia', function () {
+      request.respondWith(responses.empty)
+      expect($fenster).toBeEmpty()
+    })
+
+    describe('com sucesso', function () {
       beforeEach(function () {
-        $fenster.html('stub')
+        request.respondWith(responses.page1)
       })
 
-      describe('vazio', function () {
-        beforeEach(function () {
-          component.fetch = jasmine.createSpy('fetch')
-          component.src = ''
-        })
-
-        it('deve limpar o componente', function () {
-          expect($fenster).toBeEmpty()
-        })
-
-        it('não deve chamar o método fetch', function () {
-          expect(component.fetch).not.toHaveBeenCalled()
-        })
+      it('deve fazer uma requisição em data-url', function () {
+        expect(request.url).toBe(component.src)
+        expect(request.method).toBe('GET')
       })
 
-      it('deve recarregar o conteudo', function () {
-        component.src = '/page1.html'
-        lastRequest().respondWith(responses.page1)
+      it('deve renderizar texto de resposta da request dentro do component', function () {
         expect($fenster).toContainHtml('page1')
       })
+
+      it('deve disparar o evento onload', function () {
+        expect('load').toHaveBeenTriggeredOn($fenster)
+      })
+
+      it('não deve disparar o evento onfail', function () {
+        expect('fail').not.toHaveBeenTriggeredOn($fenster)
+      })
+
+      it('deve disparar o evento onfetch', function () {
+        expect('fetch').toHaveBeenTriggeredOn($fenster)
+      })
+
+      it('deve dar sequência à promise', function (done) {
+        fetch.then(function () {
+          done()
+        })
+      })
     })
 
-    describe('quando houver múltiplas requisições', function () {
-      it('não deve disparar o evento fail devido ao `abort`', function () {
-        var onfail = jasmine.createSpy('fail')
-        $fenster.on('fail', onfail)
-        component.fetch()
-        component.fetch()
-
-        expect(onfail).not.toHaveBeenCalled()
+    describe('com erro', function () {
+      beforeEach(function () {
+        request.respondWith(responses.error)
       })
 
-      it('deve considerar sempre a última', function () {
-        component.fetch()
-
-        var firstRequest = lastRequest()
-        setTimeout(function () {
-          firstRequest.respondWith(responses.page1)
-        }, 100)
-
-        component.fetch()
-
-        var secondRequest = lastRequest()
-        setTimeout(function () {
-          secondRequest.respondWith(responses.page2)
-        }, 50)
-
-        jasmine.clock().tick(101)
-        expect('page2').toBe($fenster.html())
+      it('não deve limpar o component', function () {
+        expect($fenster).toContainText('INITIAL_STATE')
       })
+
+      it('deve disparar o evento onerror', function () {
+        expect('fail').toHaveBeenTriggeredOn($fenster)
+      })
+
+      it('não deve disparar o evento onload', function () {
+        expect('load').not.toHaveBeenTriggeredOn($fenster)
+      })
+
+      it('deve disparar o evento onfetch', function () {
+        expect('fetch').toHaveBeenTriggeredOn($fenster)
+      })
+
+      it('deve dar sequência à promise', function (done) {
+        fetch.fail(function () {
+          done()
+        })
+      })
+    })
+  })
+
+  describe('ao setar o atributo url', function () {
+    beforeEach(function () {
+      $fenster.html('stub')
+    })
+
+    describe('vazio', function () {
+      beforeEach(function () {
+        component.src = ''
+      })
+
+      it('deve limpar o componente', function () {
+        expect($fenster).toBeEmpty()
+      })
+
+      it('não deve chamar o método fetch', function () {
+        expect(component.fetch).not.toHaveBeenCalled()
+      })
+    })
+
+    it('deve recarregar o conteudo', function () {
+      component.src = '/page1.html'
+      lastRequest().respondWith(responses.page1)
+      expect($fenster).toContainHtml('page1')
+    })
+  })
+
+  describe('quando houver múltiplas requisições', function () {
+    it('não deve disparar o evento fail devido ao `abort`', function () {
+      var onfail = jasmine.createSpy('fail')
+      $fenster.on('fail', onfail)
+      component.fetch()
+      component.fetch()
+
+      expect(onfail).not.toHaveBeenCalled()
+    })
+
+    it('deve considerar sempre a última', function () {
+      component.fetch()
+
+      var firstRequest = lastRequest()
+      setTimeout(function () {
+        firstRequest.respondWith(responses.page1)
+      }, 100)
+
+      component.fetch()
+
+      var secondRequest = lastRequest()
+      setTimeout(function () {
+        secondRequest.respondWith(responses.page2)
+      }, 50)
+
+      jasmine.clock().tick(101)
+      expect('page2').toBe($fenster.html())
     })
   })
 
