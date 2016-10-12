@@ -31,8 +31,8 @@ module.exports = {
       dataType: 'html'
     })
 
-    this.r.then(function (response) {
-      _this.render(response)
+    this.r.then(function (response, status, xhr) {
+      _this.render(response, status, xhr)
       _this.$el.trigger('load')
     })
     .fail(function (jqXHR, status) {
