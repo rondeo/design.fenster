@@ -25,19 +25,17 @@ describe('<fenster>', function () {
   var component
 
   beforeEach(function () {
-    loadFixtures('markup.html')
-    jasmine.Ajax.install()
-    jasmine.clock().install()
-
     $fenster = $('#page1')
     component = fenster($fenster)
 
     spyOn(baseObject, 'render').and.callThrough()
-  })
+    spyOn(baseObject, 'fetch').and.callThrough()
+    spyOn(baseObject, 'poll').and.callThrough()
+    spyOn(baseObject, 'halt').and.callThrough()
 
-  afterEach(function () {
-    jasmine.Ajax.uninstall()
-    jasmine.clock().uninstall()
+    spyOnEvent($fenster, 'fail')
+    spyOnEvent($fenster, 'fetch')
+    spyOnEvent($fenster, 'load')
   })
 
   describe('antes do primeiro fetch', function () {
@@ -197,9 +195,6 @@ describe('<fenster>', function () {
 
   describe('poll', function () {
     beforeEach(function () {
-      spyOn(component, 'fetch').and.callThrough()
-      spyOn(component, 'halt').and.callThrough()
-
       component.poll(120)
     })
 
@@ -242,13 +237,12 @@ describe('<fenster>', function () {
     it('deve cancelar o primeiro timeout se a chamada for duplicada', function () {
       component.poll(100)
       clockTick(121)
-      expect(component.fetch.calls.count()).toEqual(1)
+      expect(component.fetch.calls.count()).toEqual(0)
     })
   })
 
   describe('parada automática do poll', function () {
     beforeEach(function () {
-      spyOn(baseObject, 'fetch').and.callThrough()
       component.poll(10)
     })
 
@@ -271,8 +265,6 @@ describe('<fenster>', function () {
 
   describe('poll automático', function () {
     beforeEach(function () {
-      spyOn(baseObject, 'fetch').and.callThrough()
-      spyOn(baseObject, 'poll').and.callThrough()
       component = fenster($('.js-fensterpoll'))
     })
 
@@ -414,8 +406,6 @@ describe('<fenster>', function () {
     beforeEach(function () {
       $fenster = $('.js-fenster')
       component = $fenster.fenster()
-      spyOn(baseObject, 'fetch')
-      spyOn(baseObject, 'poll')
     })
 
     it('deve publicar um plugin jquery', function () {
