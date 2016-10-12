@@ -222,7 +222,7 @@ describe('<fenster>', function () {
     })
 
     it('deve cancelar o primeiro timeout se a chamada for duplicada', function () {
-      component.poll(100)
+      component.poll(400)
       clockTick(121)
       expect(component.fetch.calls.count()).toEqual(0)
     })
