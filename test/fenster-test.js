@@ -5,9 +5,10 @@
 var $ = require('jquery')
 var baseObject = require('../fenster')
 var fenster = require('../index')
+var obergaden = require('../obergaden')
 
 $.fn.fenster = 'old'
-require('../plugin')
+require('../plugin/index')
 require('../poll')
 
 var responses = require('./fixtures/responses')
@@ -32,6 +33,8 @@ describe('<fenster>', function () {
 
     $fenster = $('#page1')
     component = fenster($fenster)
+
+    spyOn(baseObject, 'render').and.callThrough()
   })
 
   afterEach(function () {
@@ -113,7 +116,7 @@ describe('<fenster>', function () {
         })
 
         it('não deve limpar o component', function () {
-          expect($fenster).toContainText('START STATE')
+          expect($fenster).toContainText('INITIAL_STATE')
         })
 
         it('deve disparar o evento onerror', function () {
@@ -290,6 +293,111 @@ describe('<fenster>', function () {
       expect(baseObject.fetch.calls.count()).toEqual(2)
       clockTick(5)
       expect(baseObject.fetch.calls.count()).toEqual(3)
+    })
+  })
+
+  describe('group', function () {
+    var $groupedElement
+    var updateAvailableEvent
+
+    beforeEach(function () {
+      $groupedElement = $('.js_t-group').first()
+      updateAvailableEvent = spyOnEvent($groupedElement, 'updateAvailable')
+
+      component = fenster($groupedElement)
+      component.fetch()
+      lastRequest().respondWith(responses.page1)
+    })
+
+    it('não deve atualizar ao fetch', function () {
+      expect($groupedElement).toContainHtml('INITIAL_STATE')
+    })
+
+    it('deve disparar o evento updateAvailable', function () {
+      expect('updateAvailable').toHaveBeenTriggeredOn($groupedElement)
+    })
+
+    it('não deve disparar o evento updateAvailable se a resposta for a mesma', function () {
+      updateAvailableEvent.reset()
+      component.fetch()
+      lastRequest().respondWith(responses.page1)
+      expect('updateAvailable').not.toHaveBeenTriggeredOn($groupedElement)
+    })
+
+    it('deve permitir atualização', function () {
+      component.applyRender()
+      expect($groupedElement).toContainHtml('page1')
+    })
+
+    it('deve se atualizar ao receber o evento updateRequested', function () {
+      $groupedElement.trigger('updateRequested')
+      expect($groupedElement).toContainHtml('page1')
+    })
+  })
+
+  describe('<obergaden>', function () {
+    var $obergaden
+    var $parts
+    var parts
+
+    beforeEach(function () {
+      $obergaden = $('.js-obergaden').first()
+      $parts = $('.js_t-group')
+      parts = $parts.toArray().map(function (part) {
+        return fenster(part)
+      })
+      component = obergaden($obergaden)
+    })
+
+    it('deve inicializar sem atualizações pendentes', function () {
+      expect(component.pendingOperations).toBe(0)
+      expect($obergaden).not.toHaveClass('is-pending')
+    })
+
+    describe('operações', function () {
+      beforeEach(function () {
+        parts[0].fetch()
+        lastRequest().respondWith(responses.page1)
+        parts[1].fetch()
+        lastRequest().respondWith(responses.page2)
+      })
+
+      it('deve contar as operações pendentes', function () {
+        expect(component.pendingOperations).toBe(2)
+      })
+
+      it('deve liberar ao click', function () {
+        expect($obergaden).toHandleWith('click', component.flush)
+      })
+
+      it('deve marcar os fenster', function () {
+        expect($parts[0]).toHaveClass('is-pending')
+        expect($parts[1]).toHaveClass('is-pending')
+      })
+
+      it('deve contar apenas uma atualização para cada fenster', function () {
+        parts[0].fetch()
+        lastRequest().respondWith(responses.empty)
+        expect(component.pendingOperations).toBe(2)
+
+        parts[0].fetch()
+        lastRequest().respondWith(responses.error)
+        expect(component.pendingOperations).toBe(2)
+      })
+
+      describe('flush', function () {
+        beforeEach(function () {
+          component.flush()
+        })
+        it('deve atualizar os componentes', function () {
+          expect($parts[0]).toContainHtml('page1')
+          expect($parts[1]).toContainHtml('page2')
+        })
+        it('deve desmarcar os componentes', function () {
+          expect($parts).not.toHaveClass('is-pending')
+          expect($obergaden).not.toHaveClass('is-pending')
+        })
+      })
     })
   })
 
