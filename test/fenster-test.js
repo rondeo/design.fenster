@@ -437,10 +437,5 @@ describe('<fenster>', function () {
       expect($fenster.length).toBeGreaterThan(1)
       expect(baseObject.fetch.calls.count()).toBe($fenster.length)
     })
-
-    it('deve preservar a antiga instância do plugin jquery', function () {
-      $.fn.fenster.noConflict()
-      expect($.fn.fenster).toBe('old')
-    })
   })
 })
