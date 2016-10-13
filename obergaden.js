@@ -29,8 +29,10 @@ fenster.render = function (response, status, xhr) {
 }
 
 fenster.applyRender = function () {
-  this.$el.removeClass('is-pending')
-  return _render.call(this, this.response)
+  if (this.$el.is('.is-pending')) {
+    this.$el.removeClass('is-pending')
+    return _render.call(this, this.response)
+  }
 }
 
 var obergaden = {

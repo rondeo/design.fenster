@@ -362,7 +362,7 @@ describe('<fenster>', function () {
         parts[1].fetch()
         lastRequest().respondWith(responses.page2)
         // group_2
-        parts[2].fetch()
+        parts[3].fetch()
         lastRequest().respondWith(responses.page2)
       })
 
@@ -389,9 +389,10 @@ describe('<fenster>', function () {
           component.flush()
         })
 
-        it('deve atualizar os componentes', function () {
+        it('deve atualizar os apenas os componentes que foram atualizados', function () {
           expect($parts[0]).toContainHtml('page1')
           expect($parts[1]).toContainHtml('page2')
+          expect($parts[2]).toContainHtml('INITIAL_STATE')
         })
 
         it('deve desmarcar os componentes', function () {
@@ -401,7 +402,7 @@ describe('<fenster>', function () {
         })
 
         it('deve cuidar só dos elementos do mesmo grupo', function () {
-          expect($parts[2]).toHaveClass('is-pending')
+          expect($parts[3]).toHaveClass('is-pending')
         })
       })
     })
