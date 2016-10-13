@@ -4,6 +4,7 @@
   "version": "0.0.16",
   "scripts": {
     "test": "standard && karma start --single-run --browsers PhantomJS",
+    "watch": "karma start",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --progress",
     "build": "cross-env NODE_ENV=production webpack -p --progress"
   },
