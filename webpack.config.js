@@ -31,9 +31,15 @@ module.exports = {
       app.get('/d/:page.html', function (req, res) {
         var template = pug.compileFile('./fixtures/' + req.params.page + '.pug')
         res.set('Content-Type', 'text/html')
-        res.send(template({
-          casual: require('casual')
-        }))
+        require('avatar-generator')()(Math.random(), 'male', 75)
+        .toBuffer(function (err, buffer) {
+          if (err) return
+          var datasrc = buffer.toString('base64')
+          res.send(template({
+            casual: require('casual'),
+            avatar: datasrc
+          }))
+        })
       })
     }
   }

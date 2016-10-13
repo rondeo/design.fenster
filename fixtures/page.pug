@@ -1,3 +1,6 @@
 h3 #{casual.title}
-p #{casual.description}
-//- img(height=200 src='https://placeimg.com/300/200/any?r=' + Math.random())
+.media
+  .media-left
+    img(height=50 src='data:image/png;base64,' + avatar)
+  .media-body
+    p #{casual.description}
