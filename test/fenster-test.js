@@ -364,6 +364,8 @@ describe('<fenster>', function () {
         // group_2
         parts[3].fetch()
         lastRequest().respondWith(responses.page2)
+
+        spyOnEvent($obergaden, 'updateAvailable')
       })
 
       it('deve contar as operações pendentes apenas de seu grupo', function () {
@@ -382,6 +384,13 @@ describe('<fenster>', function () {
         parts[0].fetch()
         lastRequest().respondWith(responses.page1)
         expect(component.pendingOperations).toBe(2)
+      })
+
+      it('deve emitir o evento updateAvailable assim que algum fenster atualizar', function () {
+        expect('updateAvailable').not.toHaveBeenTriggeredOn($obergaden)
+        parts[0].fetch()
+        lastRequest().respondWith(responses.page2)
+        expect('updateAvailable').toHaveBeenTriggeredOn($obergaden)
       })
 
       describe('flush', function () {
