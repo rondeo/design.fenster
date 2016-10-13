@@ -8,14 +8,16 @@
     <link href="bootstrap.min.css" rel="stylesheet">
     <style>
       * {font-family: 'Roboto Condensed', sans-serif;}
-      div.js-fenster { background: #5E8FBA; color: #fff; padding: 5px; margin: 5px 0; }
+      div.js-fenster { background: #5E8FBA; color: #fff; padding: 8px; margin: 15px 0; }
       h1 { font-weight:normal; border-top: 1px solid #ccc; margin: 60px 0 10px 0; padding:5px; }
       small { color: #999; font-size: 14px; font-weight: normal }
       h1 small.alert { color: #f06; font-size:16px; cursor: pointer; }
       h1.is-pending { cursor: pointer; }
       h1.is-pending:hover { background: #FFF5F0; border-color:#FFC8AD }
       h1:not(.is-pending) small.alert { display: none }
+      h3 {margin-top:6px}
       img { display: block }
+      .js-fenster.is-pending { box-shadow: 0 0 0 2px #fff, 0 0 0 3px #F8333C }
       .f { display: flex; justify-content: space-between}
       .f .size1of2 {width: calc(50% - (30px / 2))}
       .f .size1of3 {width: calc((100%/3) - (30px * 2 / 3))}
@@ -28,8 +30,8 @@
         <small>sem grupo</small><br>
         fenster
       </h1>
-      <div class='js-fenster' data-src='/fixtures/page1.html' data-poll-interval='3'>fenster 1</div>
-      <div class='js-fenster' data-src='/fixtures/page1.html' data-poll-interval='5'>fenster 2</div>
+      <div class='js-fenster' data-src='/d/point.html' data-poll-interval='3'>fenster 1</div>
+      <div class='js-fenster' data-src='/d/point.html' data-poll-interval='5'>fenster 2</div>
 
       <h1 class='js-obergaden' data-group='1'>
         <small>grupo 1</small><br>
@@ -46,9 +48,9 @@
         <small class='alert'>atualização disponivel</small>
       </h1>
       <div class='f'>
-        <div class='js-fenster / size1of2' data-src='/d/page.html' data-group='2' data-poll-interval='5'>fenster 7</div>
-        <div class='js-fenster / size1of4' data-src='/d/page.html' data-group='2' data-poll-interval='7'>fenster 8</div>
-        <div class='js-fenster / size1of4' data-src='/d/page.html' data-group='2' data-poll-interval='11'>fenster 8</div>
+        <div class='js-fenster / size1of3' data-src='/d/page.html' data-group='2' data-poll-interval='5'>fenster 7</div>
+        <div class='js-fenster / size1of3' data-src='/d/page.html' data-group='2' data-poll-interval='7'>fenster 8</div>
+        <div class='js-fenster / size1of3' data-src='/d/page.html' data-group='2' data-poll-interval='3'>fenster 8</div>
       </div>
     </div>
   </body>
