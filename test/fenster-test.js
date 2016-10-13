@@ -261,11 +261,11 @@ describe('<fenster>', function () {
       component = fenster($('.js-fensterpoll'))
     })
 
-    it('deve disparar poll automaticamente se [data-poll-interval]', function () {
+    it('deve disparar poll automaticamente se [data-head-start]', function () {
       expect(baseObject.poll.calls.count()).toEqual(1)
     })
 
-    it('deve disparar fetch automaticamente se [data-poll-interval]', function () {
+    it('deve disparar fetch automaticamente se [data-head-start]', function () {
       expect(baseObject.fetch.calls.count()).toEqual(1)
     })
 

@@ -1,3 +1,5 @@
+'use strict'
+
 var fenster = require('./fenster')
 var slice = [].slice
 
@@ -7,8 +9,11 @@ fenster.init = function () {
   _init.apply(this, slice.call(arguments))
 
   var interval = this.$el.data('pollInterval')
+  var headStart = this.$el.data('headStart')
   if (interval) {
-    this.fetch()
+    if (headStart !== undefined) {
+      this.fetch()
+    }
     this.poll(interval)
   }
 
