@@ -55,7 +55,7 @@ var obergaden = {
   },
 
   handleIncomingUpdate: function () {
-    this.$el.addClass('is-pending')
+    this.$el.addClass('is-pending').trigger('updateAvailable')
   },
 
   flush: function () {
