@@ -23,7 +23,7 @@ module.exports = {
     new CopyWebpackPlugin([
       { from: 'fixtures/*' },
       { from: 'node_modules/jquery/dist/jquery.js', to: 'jquery.js' },
-      { from: 'node_modules/bootstrap/dist/css/bootstrap.min.css'}
+      { from: 'node_modules/bootstrap/dist/css/bootstrap.min.css' }
     ])
   ],
   devServer: {
@@ -31,7 +31,9 @@ module.exports = {
       app.get('/d/:page.html', function (req, res) {
         var template = pug.compileFile('./fixtures/' + req.params.page + '.pug')
         res.set('Content-Type', 'text/html')
-        res.send(template())
+        res.send(template({
+          casual: require('casual')
+        }))
       })
     }
   }
