@@ -324,6 +324,15 @@ describe('<fenster>', function () {
       $groupedElement.trigger('updateRequested')
       expect($groupedElement).toContainHtml('page1')
     })
+
+    it('deve utilizar sempre a última atualização', function () {
+      component.fetch()
+      lastRequest().respondWith(responses.page1)
+      component.fetch()
+      lastRequest().respondWith(responses.page2)
+      $groupedElement.trigger('updateRequested')
+      expect($groupedElement).toContainHtml('page2')
+    })
   })
 
   describe('<obergaden>', function () {
