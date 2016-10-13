@@ -1,4 +1,4 @@
-/* global jasmine, describe, it, expect, beforeEach, loadFixtures, afterEach, spyOn, spyOnEvent, xit */
+/* global describe, it, expect, beforeEach, spyOn, spyOnEvent, xit */
 
 'use strict'
 
@@ -7,7 +7,7 @@ var baseObject = require('../fenster')
 $.fn.fenster = 'old'
 require('../plugin/index')
 
-xdescribe('<fenster>', function () {
+describe('<fenster>', function () {
   var $fenster
   var component
 
@@ -25,7 +25,7 @@ xdescribe('<fenster>', function () {
     expect(1).toBe(1)
   })
 
-  xdescribe('plugin jquery', function () {
+  describe('plugin jquery', function () {
     it('deve publicar um plugin jquery', function () {
       expect($.fn.fenster).toBeDefined()
     })
