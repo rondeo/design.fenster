@@ -1,6 +1,7 @@
 var path = require('path')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
+var autoprefixer = require('autoprefixer')
 
 module.exports = {
   entry: {
@@ -14,6 +15,17 @@ module.exports = {
     path: path.join(__dirname, 'dist'),
     filename: '[name].min.js'
   },
+  module: {
+    loaders: [{
+      test: /css$/,
+      loader: 'style!css?importLoaders=1!postcss'
+    }]
+  },
+
+  postcss: () => [
+    autoprefixer({ browsers: 'last 2 versions' })
+  ],
+
   externals: {
     jquery: 'jQuery'
   },
