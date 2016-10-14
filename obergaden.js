@@ -24,14 +24,13 @@ fenster.render = function (response, status, xhr) {
     this.response = response
     this.$el
       .addClass('is-pending')
-      .removeClass('is-updated')
       .trigger('updateAvailable')
   }
 }
 
 fenster.applyRender = function () {
   if (this.$el.is('.is-pending')) {
-    this.$el.removeClass('is-pending').addClass('is-updated')
+    this.$el.removeClass('is-pending')
     return _render.call(this, this.response)
   }
 }

@@ -30,6 +30,7 @@ module.exports = {
       type: 'GET',
       dataType: 'html'
     })
+    this.$el.removeClass('is-updated')
 
     this.r.then(function (response, status, xhr) {
       _this.render(response, status, xhr)
@@ -48,5 +49,6 @@ module.exports = {
   render: function (text) {
     this.$el.html(text !== undefined ? text : '')
     this.$el.trigger('render')
+      .addClass('is-updated')
   }
 }
