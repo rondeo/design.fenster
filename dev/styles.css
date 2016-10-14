@@ -1,0 +1,83 @@
+* {
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+div.js-fenster {
+  background: #91bde3;
+  color: #fff;
+  padding: 8px;
+  margin: 15px 0;
+}
+
+h1 {
+  font-weight: normal;
+  border-top: 1px solid #ccc;
+  margin: 30px 0 10px;
+  padding: 5px;
+}
+
+h1 small {
+  color: #999;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+h1 small.alert {
+  color: #e7517c;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+h1.is-pending {
+  cursor: pointer;
+}
+
+h1.is-pending:hover {
+  background: #fff5f0;
+  background: #fff4ef;
+  border-color: #ffd6c4;
+}
+
+h1:not(.is-pending) small.alert {
+  display: none;
+}
+
+h3 {
+  margin-top: 6px;
+}
+
+img {
+  display: block;
+}
+
+.js-fenster.is-pending {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3px #ffc8ad;
+}
+
+.js-fenster.is-updated {
+  animation: blink 0.5s ease-out;
+}
+
+@keyframes blink {
+  50% {
+    background: #ffa179;
+    opacity: 0.3;
+  }
+}
+
+.f {
+  display: flex;
+  justify-content: space-between;
+}
+
+.f .size1of2 {
+  width: calc(50% - (30px / 2));
+}
+
+.f .size1of3 {
+  width: calc((100%/3) - (30px * 2 / 3));
+}
+
+.f .size1of4 {
+  width: calc((100%/4) - (30px * 3 / 4));
+}
