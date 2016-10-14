@@ -6,13 +6,12 @@ var path = require('path')
 var webpackConfig = require('./webpack.config.js')
 webpackConfig.devtool = 'eval'
 
-webpackConfig.module = {
-  preLoaders: [{
-    test: /\.js$/,
-    include: path.resolve('modules'),
-    loader: 'istanbul-instrumenter'
-  }]
-}
+webpackConfig.module = webpackConfig.module || {}
+webpackConfig.module.preLoaders = [{
+  test: /\.js$/,
+  include: path.resolve('modules'),
+  loader: 'istanbul-instrumenter'
+}]
 
 module.exports = function (config) {
   config.set({
