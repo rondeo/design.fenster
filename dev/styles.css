@@ -2,11 +2,8 @@
   font-family: 'Roboto Condensed', sans-serif;
 }
 
-div.js-fenster {
-  background: #91bde3;
-  color: #fff;
-  padding: 8px;
-  margin: 15px 0;
+html {
+  overflow-y: scroll;
 }
 
 h1 {
@@ -33,7 +30,6 @@ h1.is-pending {
 }
 
 h1.is-pending:hover {
-  background: #fff5f0;
   background: #fff4ef;
   border-color: #ffd6c4;
 }
@@ -50,18 +46,27 @@ img {
   display: block;
 }
 
+.js-fenster {
+  background: #91bde3;
+  color: #fff;
+  padding: 8px;
+  margin: 15px 0;
+  box-shadow: 3px 3px 0 1px #e9e9e9;
+  transition: filter 1s ease, opacity 1s ease;
+}
+
 .js-fenster.is-pending {
-  box-shadow: 0 0 0 2px #fff, 0 0 0 3px #ffc8ad;
+  filter: blur(2px) grayscale(100%);
+  opacity: 0.3;
 }
 
 .js-fenster.is-updated {
-  animation: blink 0.5s ease-out;
+  animation: blink 0.3s ease-out;
 }
 
 @keyframes blink {
   50% {
     background: #ffa179;
-    opacity: 0.3;
   }
 }
 
