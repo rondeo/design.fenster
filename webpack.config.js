@@ -5,7 +5,10 @@ var pug = require('pug')
 
 module.exports = {
   entry: {
-    dist: ['./index'],
+    'fenster': ['./index'],
+    'fenster.poll': ['./index', './poll'],
+    'fenster.poll.obergaden': ['./index', './poll', './obergaden'],
+    'all': ['./index', './poll', './obergaden', './plugin', './plugin/obergaden'],
     dev: './dev'
   },
   output: {
