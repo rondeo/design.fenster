@@ -3591,6 +3591,10 @@ onetime@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/onetime/-/onetime-1.1.0.tgz#a1f7838f8314c516f05ecefcbc4ccfe04b4ed789"
 
+open-color:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/open-color/-/open-color-1.4.0.tgz#bc8a15aa782cfe995b3d8ad8920854b8dae10e4f"
+
 open@0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/open/-/open-0.0.5.tgz#42c3e18ec95466b6bf0dc42f3a2945c3f0cad8fc"
