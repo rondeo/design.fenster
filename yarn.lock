@@ -248,15 +248,6 @@ autoprefixer@^6.3.1, autoprefixer@^6.5.1:
     postcss "^5.2.4"
     postcss-value-parser "^3.2.3"
 
-avatar-generator@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/avatar-generator/-/avatar-generator-1.0.7.tgz#b871094fce2c984b0db896fb21308a087e67a86a"
-  dependencies:
-    commander "^2.2.0"
-    seed-random "^2.2.0"
-    through "^2.3.4"
-    underscore "^1.8.2"
-
 aws-sign2@~0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/aws-sign2/-/aws-sign2-0.5.0.tgz#c57103f7a17fc037f02d7c2e64b602ea223f7d63"
@@ -905,7 +896,7 @@ combined-stream@~0.0.4, combined-stream@~0.0.5:
   dependencies:
     delayed-stream "0.0.5"
 
-commander@^2.2.0, commander@^2.9.0, commander@2.9.x:
+commander@^2.9.0, commander@2.9.x:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.9.0.tgz#9c99094176e12240cb22d6c5146098400fe0f7d4"
   dependencies:
@@ -4712,10 +4703,6 @@ sax@~1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.1.tgz#7b8e656190b228e81a66aea748480d828cd2d37a"
 
-seed-random@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/seed-random/-/seed-random-2.2.0.tgz#2a9b19e250a817099231a5b99a4daf80b7fbed54"
-
 semver-diff@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/semver-diff/-/semver-diff-0.1.0.tgz#4f6057ca3eba23cc484b51f64aaf88b131a3855d"
@@ -5196,7 +5183,7 @@ throttleit@~0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/throttleit/-/throttleit-0.0.2.tgz#cfedf88e60c00dd9697b61fdd2a8343a9b680eaf"
 
-through@^2.3.4, through@^2.3.6, through@~2.3.4:
+through@^2.3.6, through@~2.3.4:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
 
@@ -5344,10 +5331,6 @@ uid-number@0.0.5:
 ultron@1.0.x:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.0.2.tgz#ace116ab557cd197386a4e88f4685378c8b2e4fa"
-
-underscore@^1.8.2:
-  version "1.8.3"
-  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.8.3.tgz#4f3fb53b106e6097fcf9cb4109f2a5e9bdfa5022"
 
 uniq@^1.0.1:
   version "1.0.1"
