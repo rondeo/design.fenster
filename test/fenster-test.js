@@ -284,7 +284,7 @@ describe('<fenster>', function () {
     var updateAvailableEvent
 
     beforeEach(function () {
-      $groupedElement = $('.js_t-group').first()
+      $groupedElement = $('.js_t-group').first().addClass('is-updated')
       updateAvailableEvent = spyOnEvent($groupedElement, 'updateAvailable')
 
       component = fenster($groupedElement)
@@ -300,8 +300,12 @@ describe('<fenster>', function () {
       expect($groupedElement).not.toHaveBeenTriggeredOn('render')
     })
 
-    it('deve marcar com a classe is-pending', function () {
+    it('deve marcar com a classe is-pending ao receber uma atualização', function () {
       expect($groupedElement).toHaveClass('is-pending')
+    })
+
+    it('deve desmarcar a classe is-updated ao receber uma atualização', function () {
+      expect($groupedElement).not.toHaveClass('is-updated')
     })
 
     it('deve disparar o evento updateAvailable', function () {
@@ -318,6 +322,12 @@ describe('<fenster>', function () {
     it('deve permitir atualização', function () {
       component.applyRender()
       expect($groupedElement).toContainHtml('page1')
+    })
+
+    it('deve marcar com a classe is-updated ao receber uma atualização', function () {
+      $groupedElement.removeClass('is-updated')
+      component.applyRender()
+      expect($groupedElement).toHaveClass('is-updated')
     })
 
     it('deve se atualizar ao receber o evento updateRequested', function () {
@@ -405,8 +415,6 @@ describe('<fenster>', function () {
         })
 
         it('deve desmarcar os componentes', function () {
-          expect($parts[0]).not.toHaveClass('is-pending')
-          expect($parts[1]).not.toHaveClass('is-pending')
           expect($obergaden).not.toHaveClass('is-pending')
         })
 
