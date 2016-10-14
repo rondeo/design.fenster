@@ -8,23 +8,20 @@ var _init = fenster.init
 fenster.init = function () {
   _init.apply(this, slice.call(arguments))
 
-  var interval = this.$el.data('pollInterval')
-  var headStart = this.$el.data('headStart')
-  if (interval) {
-    if (headStart !== undefined) {
-      this.fetch()
-    }
-    this.poll(interval)
-  }
-
+  var headStart = this.$el.data('headStart') !== undefined
   this.errors = 0
+  this.interval = parseInt(this.$el.data('pollInterval'), 10)
+
+  if (this.interval > 0) {
+    this.poll(this.interval, headStart)
+  }
 
   return this
 }
 
 fenster._poll = function () {
   var _this = this
-    // checar se está na DOM
+  // checar se está na DOM
   if (this.$el.closest(document.documentElement).length) {
     this.fetch()
     .then(function () {
@@ -46,6 +43,7 @@ fenster._poll = function () {
 }
 
 fenster.poll = function (seconds, headStart) {
+  seconds = Math.max(1, seconds || this.interval)
   var _this = this
   this.halt()
   this.pollId = setInterval(function () {
