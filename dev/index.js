@@ -1,7 +1,7 @@
 /* global $ */
-require('./plugin')
-require('./poll')
-require('./plugin/obergaden')
+require('../plugin')
+require('../poll')
+require('../plugin/obergaden')
 
 $('.js-fenster').fenster().on('render', function () {
   var $this = $(this)
