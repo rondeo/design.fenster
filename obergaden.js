@@ -2,8 +2,9 @@
 
 var $ = require('jquery')
 var fenster = require('./fenster')
-var slice = [].slice
+require('./poll')
 
+var slice = [].slice
 var _render = fenster.render
 var _init = fenster.init
 
@@ -60,7 +61,9 @@ var obergaden = {
 
   flush: function () {
     if (this.parts && this.parts.length > 0) {
-      this.parts.trigger('updateRequested')
+      this.parts
+        .fenster('poll') // reseta o time dos polls
+        .trigger('updateRequested')
     }
     this.$el.removeClass('is-pending')
   }
