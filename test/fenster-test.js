@@ -363,9 +363,9 @@ describe('<fenster>', function () {
 
     beforeEach(function () {
       $obergaden = $('.js-obergaden').first()
-      $parts = $('.js_t-group')
+      $parts = $('.js_t-group').fenster()
       parts = $parts.toArray().map(function (part) {
-        return fenster(part)
+        return $(part).data('plugin-fenster')
       })
       component = obergaden($obergaden)
     })
@@ -373,6 +373,12 @@ describe('<fenster>', function () {
     it('deve inicializar sem atualizações pendentes', function () {
       expect(component.pendingOperations).toBe(0)
       expect($obergaden).not.toHaveClass('is-pending')
+    })
+
+    it('deve chamar o poll dos fenster adjacentes para resetar seus timers', function () {
+      expect(baseObject.poll.calls.count()).toEqual(0)
+      component.flush()
+      expect(baseObject.poll.calls.count()).toEqual(3)
     })
 
     describe('operações', function () {
