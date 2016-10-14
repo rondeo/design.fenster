@@ -1,6 +1,13 @@
+- var casual = require('casual')
+- var colors = ['#1F271B', '#19647E', '#FF8C21', '#F6511D', '#7FB800', '#38C3E7', '#E7696F', '#79878F', '#247BA0', '#605F5E', '#E0ACD5', '#3993DD']
+- var symbols = ['𐌐', '𐌒', '𐌔', '𐌕', '𐌖', '𐌘', '𐌙', '𐌝', '𐌞', '𐌣', '𐌂', '𐌄', '𐌇', '𐌈', '𐌋', '𐌌', '𐌍', '𐌎', '𐌏']
+
+
 h3 #{casual.title}
 .media
   .media-left
-    img(height=50 src='data:image/png;base64,' + avatar)
+    - var c = Math.min(Math.floor(Math.random() * 12), 11)
+    - var s = Math.min(Math.floor(Math.random() * 19), 18)
+    .avatar(style='background:' + colors[c]) #{symbols[s]}
   .media-body
     p #{casual.description}

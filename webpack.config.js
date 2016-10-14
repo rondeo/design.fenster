@@ -19,6 +19,9 @@ module.exports = {
     loaders: [{
       test: /css$/,
       loader: 'style!css!postcss'
+    }, {
+      test: /pug$/,
+      loader: 'pug'
     }]
   },
 
@@ -31,7 +34,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'fixtures/index.html',
+      template: 'fixtures/index.pug',
       chunks: ['dev']
     }),
     new CopyWebpackPlugin([

@@ -1,0 +1,41 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  title fenster
+  script(src='/jquery.js')
+  link(href='https://fonts.googleapis.com/css?family=Roboto+Condensed', rel='stylesheet')
+  link(href='bootstrap.min.css', rel='stylesheet')
+
+body
+  .container
+    h1
+      small sem grupo
+      br
+      | fenster
+    .f
+      .js-fenster.size1of2(data-src='/d/point.html', data-poll-interval='3') fenster 1
+      .js-fenster.size1of2(data-src='/d/point.html', data-poll-interval='5') fenster 2
+
+    h1.js-obergaden(data-group='1')
+      small grupo 1
+      br
+      | obergaden
+      small.alert atualiza&ccedil;&atilde;o disponivel
+    .f
+      .js-fenster.size1of2(data-src='/d/page.html', data-group='1', data-poll-interval='7')
+        include page.pug
+      .js-fenster.size1of2(data-src='/d/page.html', data-group='1', data-poll-interval='11')
+        include page.pug
+
+    h1.js-obergaden(data-group='2')
+      small grupo 2
+      br
+      | obergaden
+      small.alert atualiza&ccedil;&atilde;o disponivel
+    .f
+      .js-fenster.size1of3(data-src='/d/page.html', data-group='2', data-poll-interval='5')
+        include page.pug
+      .js-fenster.size1of3(data-src='/d/page.html', data-group='2', data-poll-interval='5')
+        include page.pug
+      .js-fenster.size1of3(data-src='/d/page.html', data-group='2', data-poll-interval='5')
+        include page.pug

@@ -4194,7 +4194,7 @@ pug-load@^2.0.3:
     object-assign "^4.1.0"
     pug-walk "^1.0.0"
 
-pug-loader@^2.3.0:
+pug-loader:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/pug-loader/-/pug-loader-2.3.0.tgz#b869294413a2218f0a7dd92a953e592283676c10"
   dependencies:
