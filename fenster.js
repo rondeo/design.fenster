@@ -30,9 +30,10 @@ module.exports = {
       type: 'GET',
       dataType: 'html'
     })
+    this.$el.removeClass('is-updated')
 
-    this.r.then(function (response) {
-      _this.render(response)
+    this.r.then(function (response, status, xhr) {
+      _this.render(response, status, xhr)
       _this.$el.trigger('load')
     })
     .fail(function (jqXHR, status) {
@@ -47,5 +48,7 @@ module.exports = {
 
   render: function (text) {
     this.$el.html(text !== undefined ? text : '')
+    this.$el.trigger('render')
+      .addClass('is-updated')
   }
 }

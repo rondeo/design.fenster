@@ -6,13 +6,12 @@ var path = require('path')
 var webpackConfig = require('./webpack.config.js')
 webpackConfig.devtool = 'eval'
 
-webpackConfig.module = {
-  preLoaders: [{
-    test: /\.js$/,
-    include: path.resolve('modules'),
-    loader: 'istanbul-instrumenter'
-  }]
-}
+webpackConfig.module = webpackConfig.module || {}
+webpackConfig.module.preLoaders = [{
+  test: /\.js$/,
+  include: path.resolve('modules'),
+  loader: 'istanbul-instrumenter'
+}]
 
 module.exports = function (config) {
   config.set({
@@ -47,7 +46,7 @@ module.exports = function (config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    // reporters: ['spec', 'coverage'],
+    // reporters: ['spec', 'coverage', 'progress'],
     reporters: ['progress'],
 
     coverageReporter: {
