@@ -1,7 +1,7 @@
 {
   "name": "fenster",
   "main": "index.js",
-  "version": "0.0.16",
+  "version": "1.0.0",
   "scripts": {
     "test": "standard && karma start --single-run --browsers PhantomJS",
     "watch": "karma start --browsers PhantomJS",
