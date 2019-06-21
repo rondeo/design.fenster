@@ -23,4 +23,3 @@ module.exports = function (pluginName, factory) {
     return this
   }
 }
-

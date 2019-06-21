@@ -5,43 +5,53 @@ var autoprefixer = require('autoprefixer')
 
 module.exports = {
   entry: {
-    'fenster': ['./index'],
-    'fenster.poll': ['./index', './poll'],
-    'fenster.poll.obergaden': ['./index', './poll', './obergaden'],
-    'all': ['./index', './poll', './obergaden', './plugin', './plugin/obergaden'],
+    'fenster': ['./index.js'],
+    'fenster.poll': ['./index.js', './poll.js'],
+    'fenster.poll.obergaden': ['./index.js', './poll.js', './obergaden.js'],
+    'all': ['./index.js', './poll.js', './obergaden.js', './plugin', './plugin/obergaden.js'],
     dev: './dev'
   },
+
   output: {
     path: path.join(__dirname, 'dist'),
     filename: '[name].min.js'
   },
+
   module: {
-    loaders: [{
+    rules: [{
       test: /css$/,
-      loader: 'style!css!postcss'
+      use: [
+        'style-loader',
+        'css-loader',
+        {
+          loader: 'postcss-loader',
+          options: {
+            plugins: () => [autoprefixer()]
+          }
+        }
+      ]
     }, {
       test: /pug$/,
-      loader: 'pug'
+      loader: 'pug-loader'
     }]
   },
-
-  postcss: () => [
-    autoprefixer({ browsers: 'last 2 versions' })
-  ],
 
   externals: {
     jquery: 'jQuery'
   },
+
   plugins: [
     new HtmlWebpackPlugin({
       template: 'fixtures/index.pug',
       chunks: ['dev']
     }),
+
     new CopyWebpackPlugin([
       { from: 'node_modules/jquery/dist/jquery.js', to: 'jquery.js' },
       { from: 'node_modules/bootstrap/dist/css/bootstrap.min.css' }
     ])
   ],
+
   devServer: {
     setup: function (app) {
       require('./dev/pug-server')(app)
