@@ -23,16 +23,13 @@ fenster._poll = function () {
   var _this = this
   // checar se está na DOM
   if (this.$el.closest(document.documentElement).length) {
-    this.fetch()
-    .then(function () {
+    this.fetch().then(function () {
       _this.errors = 0
-    })
-    .fail(function (jqXHR, status) {
+    }).fail(function (jqXHR, status) {
       if (status !== 'abort') {
         _this.errors++
       }
-    })
-    .always(function () {
+    }).always(function () {
       if (_this.errors > 4) {
         _this.halt()
       }

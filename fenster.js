@@ -35,8 +35,7 @@ module.exports = {
     this.r.then(function (response, status, xhr) {
       _this.render(response, status, xhr)
       _this.$el.trigger('load')
-    })
-    .fail(function (jqXHR, status) {
+    }).fail(function (jqXHR, status) {
       if (status !== 'abort') {
         _this.$el.trigger('fail')
       }
